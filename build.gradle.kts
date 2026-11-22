@@ -11,43 +11,46 @@ configureBaseArchive("neoforge")
 neoForge {
     version = neoforgeVersion
 
-    // Use the official Mojang mappings for 1.21.11. The baseline Parchment
-    // coordinate was for Minecraft 1.21.1 and must not be reused here.
+```
+// Use the official Mojang mappings for 1.21.11. The baseline Parchment
+// coordinate was for Minecraft 1.21.1 and must not be reused here.
 
-    runs {
-        create("client") {
-            client()
-            systemProperty("neoforge.enabledGameTestNamespaces", modId)
-            devLogin = true
-        }
-        create("server") {
-            server()
-            systemProperty("neoforge.enabledGameTestNamespaces", modId)
-        }
-        create("gameTestServer") {
-            type = "gameTestServer"
-            systemProperty("neoforge.enabledGameTestNamespaces", modId)
-        }
-        create("data") {
-            data()
-            programArguments.addAll(
-                "--mod", modId,
-                "--all",
-                "--output", file("src/generated/resources/").absolutePath,
-                "--existing", file("src/main/resources/").absolutePath
-            )
-        }
-        configureEach {
-            systemProperty("forge.logging.markers", "REGISTRIES")
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
+runs {
+    create("client") {
+        client()
+        systemProperty("neoforge.enabledGameTestNamespaces", modId)
+        devLogin = true
     }
+    create("server") {
+        server()
+        systemProperty("neoforge.enabledGameTestNamespaces", modId)
+    }
+    create("gameTestServer") {
+        type = "gameTestServer"
+        systemProperty("neoforge.enabledGameTestNamespaces", modId)
+    }
+    create("data") {
+        data()
+        programArguments.addAll(
+            "--mod", modId,
+            "--all",
+            "--output", file("src/generated/resources/").absolutePath,
+            "--existing", file("src/main/resources/").absolutePath
+        )
+    }
+    configureEach {
+        systemProperty("forge.logging.markers", "REGISTRIES")
+        logLevel = org.slf4j.event.Level.DEBUG
+    }
+}
 
-    mods {
-        register(modId) {
-            sourceSet(sourceSets.main.get())
-        }
+mods {
+    register(modId) {
+        sourceSet(sourceSets.main.get())
     }
+}
+```
+
 }
 
 mcSafeResources {
@@ -70,9 +73,8 @@ sourceSets.main {
 }
 
 configurations {
-    val localRuntime by creating(runtimeClasspath) {
-        extendsFrom(localRuntime)
-    }
+    val localRuntime by creating
+    runtimeClasspath.get().extendsFrom(localRuntime)
 }
 
 dependencies {
@@ -80,48 +82,51 @@ dependencies {
     // when using "maven-publish" plugin.
     val localRuntime by configurations.getting
 
-    compileOnly(libs.jei.common.api)
-    compileOnly(libs.jei.neoforge.api)
-    localRuntime(libs.jei.neoforge)
-    compileOnly(libs.azurelib)
-    compileOnly(libs.azurelib.armor)
-    compileOnly(libs.geckolib)
-    compileOnly(libs.sodium)
-    compileOnly(libs.iris)
-    compileOnly(libs.werewolves)
-    compileOnly(libs.vampirism)
-    compileOnly(libs.curios)
-    compileOnly(libs.playerAnimator)
-    compileOnly(libs.kubejs)
-    compileOnly(libs.rhino)
-    implementation(libs.architectury)
-    implementation(libs.bundles.simply)
+```
+compileOnly(libs.jei.common.api)
+compileOnly(libs.jei.neoforge.api)
+localRuntime(libs.jei.neoforge)
+compileOnly(libs.azurelib)
+compileOnly(libs.azurelib.armor)
+compileOnly(libs.geckolib)
+compileOnly(libs.sodium)
+compileOnly(libs.iris)
+compileOnly(libs.werewolves)
+compileOnly(libs.vampirism)
+compileOnly(libs.curios)
+compileOnly(libs.playerAnimator)
+compileOnly(libs.kubejs)
+compileOnly(libs.rhino)
+implementation(libs.architectury)
+implementation(libs.bundles.simply)
 
-    // Libraries for tr7zw featured mods
-    compileOnly("libs:TRansition:1.0.6")
-    compileOnly("libs:TRender:1.0.7")
-    compileOnly(libs.skinlayers)
-    compileOnly(libs.firstPersonModel)
-    compileOnly(libs.shoulderSurfing)
-    compileOnly(libs.controlify) {
-        // Only need Controlify API, ignore transitive dependencies (e.g., QuiltMC parsers).
-        isTransitive = false
-    }
-    compileOnly(libs.fgm)
-    implementation(libs.creativeCore)
-    implementation(libs.playerRevive)
+// Libraries for tr7zw featured mods
+compileOnly("libs:TRansition:1.0.6")
+compileOnly("libs:TRender:1.0.7")
+compileOnly(libs.skinlayers)
+compileOnly(libs.firstPersonModel)
+compileOnly(libs.shoulderSurfing)
+compileOnly(libs.controlify) {
+    // Only need Controlify API, ignore transitive dependencies (e.g., QuiltMC parsers).
+    isTransitive = false
+}
+compileOnly(libs.fgm)
+implementation(libs.creativeCore)
+implementation(libs.playerRevive)
+```
+
 }
 
 tasks.processResources {
     val replaceProperties = modPlatformMetadataReplaceProperties
     inputs.properties(replaceProperties)
-    filesMatching("META-INF/*.mods.toml") {
+    filesMatching("META-INF/\*.mods.toml") {
         expand(replaceProperties)
     }
 }
 
 // The API JAR file includes only classes from the API package.
-val apiPackage = "yesman/epicfight/api/**"
+val apiPackage = "yesman/epicfight/api/\*\*"
 val apiJarClassifier = "api"
 val apiJar by tasks.registering(Jar::class) {
     group = "build"
