@@ -1,6 +1,9 @@
 name: Port Minecraft 1.21.11 mechanical API renames
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - 1.21.11-neoforge-port
+  workflow\_dispatch:
 permissions:
   contents: write
 jobs:
@@ -9,15 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.ref\_name }}
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
       - name: Apply mechanical Java source renames
-        run: python3 -c 'from pathlib import Path; from functools import reduce; rules=[("ResourceLocationException","IdentifierException"),("ResourceLocationSearchTree","IdentifierSearchTree"),("ResourceLocationArgument","IdentifierArgument"),("ResourceLocationPattern","IdentifierPattern"),("ResourceLocationParseRule","IdentifierParseRule"),("readResourceLocation","readIdentifier"),("writeResourceLocation","writeIdentifier"),("getResourceLocation","getIdentifier"),("searchResourceLocation","searchIdentifier"),("isValidResourceLocation","isValidIdentifier"),("resourceLocationSearchTree","identifierSearchTree"),("ResourceLocation","Identifier"),("net.minecraft.advancements.critereon","net.minecraft.advancements.criterion"),("import net.minecraft.Util;","import net.minecraft.util.Util;"),("import net.minecraft.FileUtil;","import net.minecraft.util.FileUtil;"),("import net.minecraft.BlockUtil;","import net.minecraft.util.BlockUtil;")]; changed=[(p,text,reduce(lambda value,rule:value.replace(*rule),rules,text)) for p,text in [(p,p.read_text(encoding="utf-8")) for p in Path("src/main/java").rglob(chr(42)+".java")]]; [p.write_text(new,encoding="utf-8") for p,old,new in changed if old!=new]; print(f"Mechanical rename updated {sum(old!=new for _,old,new in changed)} Java files.")'
+        run: python3 -c 'from pathlib import Path; from functools import reduce; rules=\[("ResourceLocationException","IdentifierException"),("ResourceLocationSearchTree","IdentifierSearchTree"),("ResourceLocationArgument","IdentifierArgument"),("ResourceLocationPattern","IdentifierPattern"),("ResourceLocationParseRule","IdentifierParseRule"),("readResourceLocation","readIdentifier"),("writeResourceLocation","writeIdentifier"),("getResourceLocation","getIdentifier"),("searchResourceLocation","searchIdentifier"),("isValidResourceLocation","isValidIdentifier"),("resourceLocationSearchTree","identifierSearchTree"),("ResourceLocation","Identifier"),("net.minecraft.advancements.critereon","net.minecraft.advancements.criterion"),("import net.minecraft.Util;","import net.minecraft.util.Util;"),("import net.minecraft.FileUtil;","import net.minecraft.util.FileUtil;"),("import net.minecraft.BlockUtil;","import net.minecraft.util.BlockUtil;")\]; changed=\[(p,text,reduce(lambda value,rule:value.replace(\*rule),rules,text)) for p,text in \[(p,p.read\_text(encoding="utf-8")) for p in Path("src/main/java").rglob(chr(42)+".java")\]\]; \[p.write\_text(new,encoding="utf-8") for p,old,new in changed if old!=new\]; print(f"Mechanical rename updated {sum(old!=new for \_,old,new in changed)} Java files.")'
       - name: Compile source after mechanical changes
         run: ./gradlew compileJava --no-daemon
         continue-on-error: true
       - name: Commit transformed Java sources
-        run: git add src/main/java && (git diff --cached --quiet || git commit -m 'Apply Minecraft 1.21.11 mechanical API renames') && git push origin "HEAD:${GITHUB_REF_NAME}"
+        run: git add src/main/java &amp;&amp; (git diff --cached --quiet || git commit -m 'Apply Minecraft 1.21.11 mechanical API renames') &amp;&amp; git push origin "HEAD:${GITHUB\_REF\_NAME}"
