@@ -5,7 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class OverlayManager {
 	private Map<String, OverlayManager.Overlay> overlays = Maps.newHashMap();
@@ -40,7 +40,7 @@ public class OverlayManager {
 		return this.isGammaChanged;
 	}
 
-	public void blendingTexture(String overlayId, ResourceLocation texture) {
+	public void blendingTexture(String overlayId, Identifier texture) {
 		if (Minecraft.renderNames()) {
 			this.overlays.put(overlayId, new BlendingTextureOverlay(texture));
 		}

@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
@@ -55,11 +55,11 @@ public class PresetRenderer extends PatchedEntityRenderer<LivingEntity, LivingEn
 		this.presetRenderer = renderer;
 		this.mesh = mesh;
 		
-		ResourceLocation type = EntityType.getKey(entityType);
+		Identifier type = EntityType.getKey(entityType);
 		FileToIdConverter filetoidconverter = FileToIdConverter.json("animated_layers/" + type.getPath());
-		List<Pair<ResourceLocation, JsonElement>> layers = Lists.newArrayList();
+		List<Pair<Identifier, JsonElement>> layers = Lists.newArrayList();
 		
-		for (Map.Entry<ResourceLocation, Resource> entry : filetoidconverter.listMatchingResources(context.getResourceManager()).entrySet()) {
+		for (Map.Entry<Identifier, Resource> entry : filetoidconverter.listMatchingResources(context.getResourceManager()).entrySet()) {
 			Reader reader = null;
 			
 			try {

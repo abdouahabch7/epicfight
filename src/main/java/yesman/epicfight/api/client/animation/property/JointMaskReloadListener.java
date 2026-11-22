@@ -12,7 +12,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -21,16 +21,16 @@ import yesman.epicfight.api.client.animation.property.JointMask.JointMaskSet;
 import yesman.epicfight.main.EpicFightMod;
 
 public class JointMaskReloadListener extends SimpleJsonResourceReloadListener {
-	private static final BiMap<ResourceLocation, JointMaskSet> JOINT_MASKS = HashBiMap.create();
+	private static final BiMap<Identifier, JointMaskSet> JOINT_MASKS = HashBiMap.create();
 	private static final Map<String, JointMask.BindModifier> BIND_MODIFIERS = Maps.newHashMap();
-    private static final ResourceLocation NONE_MASK = EpicFightMod.identifier("none");
+    private static final Identifier NONE_MASK = EpicFightMod.identifier("none");
 	
 	static {
 		BIND_MODIFIERS.put("keep_child_locrot", JointMask.KEEP_CHILD_LOCROT);
 	}
 	
 	public static JointMaskSet getJointMaskEntry(String type) {
-		ResourceLocation rl = ResourceLocation.parse(type);
+		Identifier rl = Identifier.parse(type);
 		return JOINT_MASKS.getOrDefault(rl, JOINT_MASKS.get(NONE_MASK));
 	}
 	
@@ -38,11 +38,11 @@ public class JointMaskReloadListener extends SimpleJsonResourceReloadListener {
 		return JOINT_MASKS.get(NONE_MASK);
 	}
 	
-	public static ResourceLocation getKey(JointMaskSet type) {
+	public static Identifier getKey(JointMaskSet type) {
 		return JOINT_MASKS.inverse().get(type);
 	}
 	
-	public static Set<Map.Entry<ResourceLocation, JointMaskSet>> entries() {
+	public static Set<Map.Entry<Identifier, JointMaskSet>> entries() {
 		return JOINT_MASKS.entrySet();
 	}
 	
@@ -51,10 +51,10 @@ public class JointMaskReloadListener extends SimpleJsonResourceReloadListener {
 	}
 	
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManager, ProfilerFiller profileFiller) {
+	protected void apply(Map<Identifier, JsonElement> objectIn, ResourceManager resourceManager, ProfilerFiller profileFiller) {
 		JOINT_MASKS.clear();
 		
-		for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {
+		for (Map.Entry<Identifier, JsonElement> entry : objectIn.entrySet()) {
 			Set<JointMask> masks = Sets.newHashSet();
 			JsonObject object = entry.getValue().getAsJsonObject();
 			JsonArray joints = object.getAsJsonArray("joints");
@@ -73,7 +73,7 @@ public class JointMaskReloadListener extends SimpleJsonResourceReloadListener {
 			}
 			
 			String path = entry.getKey().toString();
-			ResourceLocation key = ResourceLocation.fromNamespaceAndPath(entry.getKey().getNamespace(), path.substring(path.lastIndexOf("/") + 1));
+			Identifier key = Identifier.fromNamespaceAndPath(entry.getKey().getNamespace(), path.substring(path.lastIndexOf("/") + 1));
 			
 			JOINT_MASKS.put(key, JointMaskSet.of(masks));
 		}

@@ -7,7 +7,7 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -213,9 +213,9 @@ public class SlotSelectScreen extends Screen {
     }
 
     static class SlotButton extends Button {
-        final ResourceLocation texture;
+        final Identifier texture;
 
-        protected SlotButton(int x, int y, int width, int height, Component tooltip, ResourceLocation textureLocation, Button.OnPress onPress) {
+        protected SlotButton(int x, int y, int width, int height, Component tooltip, Identifier textureLocation, Button.OnPress onPress) {
             super(x, y, width, height, Component.empty(), onPress, Button.DEFAULT_NARRATION);
             this.texture = textureLocation;
             this.setTooltip(Tooltip.create(tooltip));

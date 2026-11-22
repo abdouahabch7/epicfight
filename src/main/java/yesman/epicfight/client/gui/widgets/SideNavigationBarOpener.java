@@ -7,7 +7,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.CommonInputs;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import yesman.epicfight.client.gui.screen.SideBarScreen;
 import yesman.epicfight.client.gui.widgets.common.AnchoredWidget;
 import yesman.epicfight.client.gui.widgets.common.PressableWidget;
@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.function.Function;
 
 public class SideNavigationBarOpener extends AbstractWidget implements AnchoredWidget, PressableWidget {
-    private static final ResourceLocation ARROW_SPRITE = EpicFightMod.identifier("widget/arrow");
-    private static final ResourceLocation ARROW_HIGHLIGHTED_SPRITE = EpicFightMod.identifier("widget/arrow_highlighted");
+    private static final Identifier ARROW_SPRITE = EpicFightMod.identifier("widget/arrow");
+    private static final Identifier ARROW_HIGHLIGHTED_SPRITE = EpicFightMod.identifier("widget/arrow_highlighted");
 
     private final Screen owner;
     private final Screen twoStepsParent;
@@ -53,7 +53,7 @@ public class SideNavigationBarOpener extends AbstractWidget implements AnchoredW
         guiGraphics.fill(minX, minY, maxX, maxY, outlineColor);
         guiGraphics.fill(minX, minY + 1, maxX - 1, maxY - 1, 0xFF000000);
 
-        ResourceLocation resourcelocation = this.isHoveredOrFocused() ? ARROW_HIGHLIGHTED_SPRITE : ARROW_SPRITE;
+        Identifier resourcelocation = this.isHoveredOrFocused() ? ARROW_HIGHLIGHTED_SPRITE : ARROW_SPRITE;
         guiGraphics.blitSprite(resourcelocation, this.getX() + this.getWidth() / 2 - 3, this.getY() + this.getHeight() / 2 - 3, 4, 6);
 
         guiGraphics.pose().popPose();

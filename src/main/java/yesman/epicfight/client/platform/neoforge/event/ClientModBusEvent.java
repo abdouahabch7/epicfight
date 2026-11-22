@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.ModelIdentifier;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -107,20 +107,20 @@ public final class ClientModBusEvent {
 		event.registerAboveAll(EpicFightMod.identifier("charging_bar"), RenderEngine.getInstance().battleModeHUD::renderChargingBar);
 	}
 	
-	private static ResourceLocation wrapItemModelPath(ResourceLocation rl) {
-		return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), "item/" + rl.getPath());
+	private static Identifier wrapItemModelPath(Identifier rl) {
+		return Identifier.fromNamespaceAndPath(rl.getNamespace(), "item/" + rl.getPath());
 	}
 	
 	@SubscribeEvent
 	public static void registerAdditionalEvent(ModelEvent.RegisterAdditional event) {
 		SkillCategory.ENUM_MANAGER.universalValues().stream().filter(skillCategory -> !skillCategory.bookIcon().equals(SkillCategory.DEFAULT_BOOK_ICON)).forEach(skillCategory -> {
-			event.register(new ModelResourceLocation(wrapItemModelPath(skillCategory.bookIcon()), ModelResourceLocation.STANDALONE_VARIANT));
+			event.register(new ModelIdentifier(wrapItemModelPath(skillCategory.bookIcon()), ModelIdentifier.STANDALONE_VARIANT));
 		});
 	}
 	
 	@SubscribeEvent
 	public static void modifyBakingResultEvent(ModelEvent.ModifyBakingResult event) {
-		ModelResourceLocation skillbookLocation = new ModelResourceLocation(SkillCategory.DEFAULT_BOOK_ICON, ModelResourceLocation.INVENTORY_VARIANT);
+		ModelIdentifier skillbookLocation = new ModelIdentifier(SkillCategory.DEFAULT_BOOK_ICON, ModelIdentifier.INVENTORY_VARIANT);
 		
 		if (event.getModels().containsKey(skillbookLocation)) {
 			List<ItemOverrides.BakedOverride> skillCategoryOverrides = new ArrayList<> ();
@@ -128,7 +128,7 @@ public final class ClientModBusEvent {
 			SkillCategory.ENUM_MANAGER.universalValues().stream().filter(skillCategory -> !skillCategory.bookIcon().equals(SkillCategory.DEFAULT_BOOK_ICON)).sorted((c1, c2) -> {
 				return Integer.compare(c2.universalOrdinal(), c1.universalOrdinal());
 			}).forEach(skillCategory -> {
-				ModelResourceLocation model = new ModelResourceLocation(wrapItemModelPath(skillCategory.bookIcon()), ModelResourceLocation.STANDALONE_VARIANT);
+				ModelIdentifier model = new ModelIdentifier(wrapItemModelPath(skillCategory.bookIcon()), ModelIdentifier.STANDALONE_VARIANT);
 				ItemOverrides.PropertyMatcher[] propertyMatchers = new ItemOverrides.PropertyMatcher[1];
 				propertyMatchers[0] = new ItemOverrides.PropertyMatcher(0, skillCategory.universalOrdinal());
 				BakedModel bakedModel = event.getModelBakery().getBakedTopLevelModels().get(model);
@@ -137,7 +137,7 @@ public final class ClientModBusEvent {
 			
 			ItemOverrides overrides = event.getModels().get(skillbookLocation).getOverrides();
 			overrides.overrides = skillCategoryOverrides.toArray(ItemOverrides.BakedOverride[]::new);
-			overrides.properties = new ResourceLocation[] {EpicFightMod.identifier("skill")};
+			overrides.properties = new Identifier[] {EpicFightMod.identifier("skill")};
 		}
 	}
 }

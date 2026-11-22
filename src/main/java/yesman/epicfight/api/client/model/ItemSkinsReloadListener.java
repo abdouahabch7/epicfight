@@ -5,7 +5,7 @@ import java.util.Map;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -19,7 +19,7 @@ public class ItemSkinsReloadListener extends SimpleJsonResourceReloadListener {
 	}
 	
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManager, ProfilerFiller profileFiller) {
+	protected void apply(Map<Identifier, JsonElement> objectIn, ResourceManager resourceManager, ProfilerFiller profileFiller) {
 		RenderEngine.getInstance().reloadItemRenderers(objectIn);
 	}
 }

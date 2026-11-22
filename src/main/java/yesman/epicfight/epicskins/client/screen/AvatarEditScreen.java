@@ -15,7 +15,7 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import yesman.epicfight.api.animation.types.StaticAnimation;
@@ -758,7 +758,7 @@ public class AvatarEditScreen extends Screen {
 		}
 
 		public class CapeBlock extends CosmeticBlock {
-            private static final ResourceLocation LOCK_ICON = EpicFightMod.identifier("textures/gui/lock.png");
+            private static final Identifier LOCK_ICON = EpicFightMod.identifier("textures/gui/lock.png");
 			private final ModelPreviewer modelPreviewer;
 			private Cosmetic cosmetic;
 

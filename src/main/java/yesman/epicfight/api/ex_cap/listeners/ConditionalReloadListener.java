@@ -7,7 +7,7 @@ import org.jetbrains.annotations.ApiStatus;
 import yesman.epicfight.api.event.EpicFightEventHooks;
 import yesman.epicfight.api.ex_cap.modules.core.events.ConditionalRegistryEvent;
 import yesman.epicfight.api.ex_cap.managers.ConditionalManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -29,7 +29,7 @@ public class ConditionalReloadListener extends SimpleJsonResourceReloadListener
     }
 
     @Override
-    protected void apply(@NotNull Map<ResourceLocation, JsonElement> elementMap, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller)
+    protected void apply(@NotNull Map<Identifier, JsonElement> elementMap, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller)
     {
         @Deprecated
         ConditionalRegistryEvent event = createEvent();

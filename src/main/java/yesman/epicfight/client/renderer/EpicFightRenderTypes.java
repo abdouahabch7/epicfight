@@ -17,11 +17,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.inventory.InventoryMenu;
 import yesman.epicfight.main.EpicFightMod;
@@ -39,7 +39,7 @@ public final class EpicFightRenderTypes extends RenderType {
 		}
 	}
 	
-	private static final BiFunction<ResourceLocation, RenderStateShard.CullStateShard, RenderType> TRIANGULATED_OUTLINE =
+	private static final BiFunction<Identifier, RenderStateShard.CullStateShard, RenderType> TRIANGULATED_OUTLINE =
 		Util.memoize((texLocation, cullStateShard) -> {
 			return RenderType.create(
 				EpicFightMod.prefix("outline"),
@@ -58,7 +58,7 @@ public final class EpicFightRenderTypes extends RenderType {
 			);
 		});
 	
-	private static final Map<String, Map<ResourceLocation, RenderType>> TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE = new HashMap<> ();
+	private static final Map<String, Map<Identifier, RenderType>> TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE = new HashMap<> ();
 	
 	private static final Function<RenderType, RenderType> TRIANGULATED_RENDER_TYPES = Util.memoize(renderType -> {
 		if (renderType.mode() == VertexFormat.Mode.TRIANGLES) {
@@ -66,7 +66,7 @@ public final class EpicFightRenderTypes extends RenderType {
 		}
 		
 		if (renderType instanceof CompositeRenderType compositeRenderType) {
-			Optional<ResourceLocation> cutoutTexture;
+			Optional<Identifier> cutoutTexture;
 			
 			if (compositeRenderType.state.textureState instanceof TextureStateShard texStateShard) {
 				cutoutTexture = texStateShard.texture;
@@ -75,10 +75,10 @@ public final class EpicFightRenderTypes extends RenderType {
 			}
 			
 			if (TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE.containsKey(renderType.name)) {
-				Map<ResourceLocation, RenderType> renderTypesByTexture = TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE.get(renderType.name);
+				Map<Identifier, RenderType> renderTypesByTexture = TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE.get(renderType.name);
 				
 				if (compositeRenderType.state.textureState instanceof TextureStateShard) {
-					ResourceLocation texLocation = cutoutTexture.orElse(null);
+					Identifier texLocation = cutoutTexture.orElse(null);
 					
 					if (renderTypesByTexture.containsKey(texLocation)) {
 						return renderTypesByTexture.get(texLocation);
@@ -113,8 +113,8 @@ public final class EpicFightRenderTypes extends RenderType {
 	/**
 	 * Cache all Texture - RenderType entries to replace texture by MeshPart
 	 */
-	public static void addRenderType(String name, ResourceLocation textureLocation, RenderType renderType) {
-		Map<ResourceLocation, RenderType> renderTypesByTexture = TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE.computeIfAbsent(name, (k) -> Maps.newHashMap());
+	public static void addRenderType(String name, Identifier textureLocation, RenderType renderType) {
+		Map<Identifier, RenderType> renderTypesByTexture = TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE.computeIfAbsent(name, (k) -> Maps.newHashMap());
 		renderTypesByTexture.put(textureLocation, renderType);
 	}
 	
@@ -296,7 +296,7 @@ public final class EpicFightRenderTypes extends RenderType {
 				.createCompositeState(false)
 		);
 	
-	private static final Function<ResourceLocation, RenderType> ENTITY_UI_TEXTURE = Util.memoize(
+	private static final Function<Identifier, RenderType> ENTITY_UI_TEXTURE = Util.memoize(
 		(textureLocation) -> create( 
 			  EpicFightMod.prefix("ui_texture")
 			, DefaultVertexFormat.POSITION_TEX
@@ -362,7 +362,7 @@ public final class EpicFightRenderTypes extends RenderType {
 			.createCompositeState(false)
 	);
 	
-	private static final Function<ResourceLocation, RenderType> OVERLAY_MODEL = Util.memoize(texLocation -> {
+	private static final Function<Identifier, RenderType> OVERLAY_MODEL = Util.memoize(texLocation -> {
 		return create(
 			EpicFightMod.prefix("overlay_model"),
 			DefaultVertexFormat.NEW_ENTITY,
@@ -421,7 +421,7 @@ public final class EpicFightRenderTypes extends RenderType {
 				.createCompositeState(false)
 		);
 	
-	private static final Function<ResourceLocation, RenderType> ENTITY_PARTICLE = Util.memoize(texLocation -> {
+	private static final Function<Identifier, RenderType> ENTITY_PARTICLE = Util.memoize(texLocation -> {
 		return create(
 			EpicFightMod.prefix("entity_particle"),
 			DefaultVertexFormat.NEW_ENTITY,
@@ -460,7 +460,7 @@ public final class EpicFightRenderTypes extends RenderType {
 				.createCompositeState(false)
 		);
 	
-	private static final Function<ResourceLocation, RenderType> ENTITY_PARTICLE_STENCIL = Util.memoize(texLocation -> {
+	private static final Function<Identifier, RenderType> ENTITY_PARTICLE_STENCIL = Util.memoize(texLocation -> {
 		return create(
 			EpicFightMod.prefix("entity_particle_stencil"),
 			DefaultVertexFormat.POSITION_TEX,
@@ -509,7 +509,7 @@ public final class EpicFightRenderTypes extends RenderType {
 				.createCompositeState(false)
 		);
 
-	private static RenderType replaceTextureShard(ResourceLocation texToReplace, RenderType renderType) {
+	private static RenderType replaceTextureShard(Identifier texToReplace, RenderType renderType) {
 		if (renderType instanceof CompositeRenderType compositeRenderType && compositeRenderType.state.textureState instanceof TextureStateShard texStateShard) {
 			CompositeState textureReplacedState = new CompositeState(
 				  new RenderStateShard.TextureStateShard(texToReplace, texStateShard.blur, texStateShard.mipmap)
@@ -534,9 +534,9 @@ public final class EpicFightRenderTypes extends RenderType {
 		}
 	}
 	
-	public static RenderType replaceTexture(ResourceLocation texLocation, RenderType renderType) {
+	public static RenderType replaceTexture(Identifier texLocation, RenderType renderType) {
 		if (TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE.containsKey(renderType.name)) {
-			Map<ResourceLocation, RenderType> renderTypesByTexture = TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE.get(renderType.name);
+			Map<Identifier, RenderType> renderTypesByTexture = TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE.get(renderType.name);
 			
 			if (renderTypesByTexture.containsKey(texLocation)) {
 				return renderTypesByTexture.get(texLocation);
@@ -549,7 +549,7 @@ public final class EpicFightRenderTypes extends RenderType {
 			return renderType;
 		}
 		
-		Map<ResourceLocation, RenderType> renderTypesByTexture = TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE.computeIfAbsent(textureReplacedRenderType.name, k -> new HashMap<> ());
+		Map<Identifier, RenderType> renderTypesByTexture = TRIANGLED_RENDERTYPES_BY_NAME_TEXTURE.computeIfAbsent(textureReplacedRenderType.name, k -> new HashMap<> ());
 		renderTypesByTexture.put(texLocation, textureReplacedRenderType);
 		
 		return textureReplacedRenderType;
@@ -559,7 +559,7 @@ public final class EpicFightRenderTypes extends RenderType {
 		return ENTITY_UI_COLORED;
 	}
 	
-	public static RenderType entityUITexture(ResourceLocation resourcelocation) {
+	public static RenderType entityUITexture(Identifier resourcelocation) {
 		return ENTITY_UI_TEXTURE.apply(resourcelocation);
 	}
 	
@@ -575,11 +575,11 @@ public final class EpicFightRenderTypes extends RenderType {
 		return GUI_TRIANGLE;
 	}
 	
-	public static RenderType overlayModel(ResourceLocation textureLocation) {
+	public static RenderType overlayModel(Identifier textureLocation) {
 		return OVERLAY_MODEL.apply(textureLocation);
 	}
 	
-	public static RenderType entityAfterimageStencil(ResourceLocation textureLocation) {
+	public static RenderType entityAfterimageStencil(Identifier textureLocation) {
 		return ENTITY_PARTICLE_STENCIL.apply(textureLocation);
 	}
 	
@@ -587,7 +587,7 @@ public final class EpicFightRenderTypes extends RenderType {
 		return ITEM_PARTICLE_STENCIL;
 	}
 	
-	public static RenderType entityAfterimageTranslucent(ResourceLocation textureLocation) {
+	public static RenderType entityAfterimageTranslucent(Identifier textureLocation) {
 		return ENTITY_PARTICLE.apply(textureLocation);
 	}
 	

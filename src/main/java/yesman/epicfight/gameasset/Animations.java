@@ -913,7 +913,7 @@ public class Animations {
 
         TOOL_AUTO1 = builder.nextAccessor("biped/combat/tool_auto1", (accessor) ->
             new ComboAttackAnimation(0.13F, 0.05F, 0.15F, 0.3F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
-                .setResourceLocation(EpicFightMod.MODID, "biped/combat/sword_auto1")
+                .setIdentifier(EpicFightMod.MODID, "biped/combat/sword_auto1")
         );
         TOOL_AUTO2 = builder.nextAccessor("biped/combat/sword_auto4", (accessor) ->
             new ComboAttackAnimation(0.13F, 0.05F, 0.15F, 0.4F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
@@ -1075,7 +1075,7 @@ public class Animations {
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.4F));
         DAGGER_DUAL_AIR_SLASH = builder.nextAccessor("biped/combat/dagger_dual_airslash", (accessor) -> new AirSlashAnimation(0.1F, 0.15F, 0.26F, 0.4F, ColliderPreset.DUAL_DAGGER_AIR_SLASH, Armatures.BIPED.get().torso, accessor, Armatures.BIPED)
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.0F)
-                .setResourceLocation(EpicFightMod.MODID, "biped/combat/sword_dual_airslash"));
+                .setIdentifier(EpicFightMod.MODID, "biped/combat/sword_dual_airslash"));
         AXE_AIRSLASH = builder.nextAccessor("biped/combat/axe_airslash", (accessor) -> new AirSlashAnimation(0.1F, 0.3F, 0.4F, 0.65F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED));
 
         SWORD_MOUNT_ATTACK = builder.nextAccessor("biped/combat/sword_mount_attack", (accessor) -> new MountAttackAnimation(0.16F, 0.1F, 0.2F, 0.25F, 0.7F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED));
@@ -1970,7 +1970,7 @@ public class Animations {
             new AttackAnimation(0.1F, 0.25F, 0.3F, 0.4F, 0.8F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F)
                 .addProperty(StaticAnimationProperty.POSE_MODIFIER, Animations.ReusableSources.COMBO_ATTACK_DIRECTION_MODIFIER)
-                .setResourceLocation(EpicFightMod.MODID, "biped/combat/spear_dash")
+                .setIdentifier(EpicFightMod.MODID, "biped/combat/spear_dash")
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
                     SimpleEvent.create((entitypatch, animation, params) -> {
                         List<LivingEntity> hitEnemies = entitypatch.getCurrentlyActuallyHitEntities();

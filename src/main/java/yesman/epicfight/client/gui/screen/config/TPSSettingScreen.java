@@ -10,7 +10,7 @@ import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import yesman.epicfight.client.gui.widgets.AnchoredButton;
 import yesman.epicfight.client.gui.widgets.common.AnchoredWidget;
@@ -19,10 +19,10 @@ import yesman.epicfight.generated.LangKeys;
 import yesman.epicfight.main.EpicFightMod;
 
 public class TPSSettingScreen extends Screen {
-    private static final ResourceLocation DIRECTION_BUTTON_SPRITE = EpicFightMod.identifier("widget/direction_button");
-    private static final ResourceLocation DIRECTION_BUTTON_DISABLED_SPRITE = EpicFightMod.identifier("widget/direction_button_disabled");
-    private static final ResourceLocation DIRECTION_BUTTON_HIGHLIGHTED_SPRITE = EpicFightMod.identifier("widget/direction_button_highlighted");
-    private static final ResourceLocation ZOOM_SCROLL_SPRITE = EpicFightMod.identifier("widget/zoom_scroll");
+    private static final Identifier DIRECTION_BUTTON_SPRITE = EpicFightMod.identifier("widget/direction_button");
+    private static final Identifier DIRECTION_BUTTON_DISABLED_SPRITE = EpicFightMod.identifier("widget/direction_button_disabled");
+    private static final Identifier DIRECTION_BUTTON_HIGHLIGHTED_SPRITE = EpicFightMod.identifier("widget/direction_button_highlighted");
+    private static final Identifier ZOOM_SCROLL_SPRITE = EpicFightMod.identifier("widget/zoom_scroll");
 
     private static final Component NO_WORLD_WARNING = Component.translatable(LangKeys.GUI_MESSAGE_SETTINGS_CAMERA_TPS_PERSPECTIVE_RECOMMEND_JOIN_WORLD);
 
@@ -219,7 +219,7 @@ public class TPSSettingScreen extends Screen {
 
             guiGraphics.pose().translate(-8.0F, -8.0F, 0.0F);
             //guiGraphics.blit(BUTTON_TEXTURE, 0, 0, 0, u, v, 16, 16, 64, 64);
-            ResourceLocation sprite = this.isActive() ? (this.isHoveredOrFocused() ? DIRECTION_BUTTON_HIGHLIGHTED_SPRITE : DIRECTION_BUTTON_SPRITE) : DIRECTION_BUTTON_DISABLED_SPRITE;
+            Identifier sprite = this.isActive() ? (this.isHoveredOrFocused() ? DIRECTION_BUTTON_HIGHLIGHTED_SPRITE : DIRECTION_BUTTON_SPRITE) : DIRECTION_BUTTON_DISABLED_SPRITE;
             guiGraphics.blitSprite(sprite, 0, 0, 16, 16);
             guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 

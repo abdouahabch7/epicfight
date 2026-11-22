@@ -16,7 +16,7 @@
  * <li>Avoid direct instantiation of {@code Entry} classes; always use the
  * provided {@code Manager} registration methods.</li>
  * <li>Prefer passing direct object references (e.g., {@code Movesets.SWORD_MS})
- * over ResourceLocations where possible to ensure compile-time safety.</li>
+ * over Identifiers where possible to ensure compile-time safety.</li>
  * </ul>
  * @since 1.21.1
  * @version 2.0

@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -86,7 +86,7 @@ public class EntitySnapshot<T extends LivingEntityPatch<?>> {
 		PatchedEntityRenderer patchedrenderer = (PatchedEntityRenderer)RenderEngine.getInstance().getEntityRenderer(entitypatch.getOriginal());
 		AssetAccessor<SkinnedMesh> meshAccessor = patchedrenderer.getMeshProvider(entitypatch);
 		
-		ResourceLocation textureLocation = vanillarenderer.getTextureLocation(entitypatch.getOriginal());
+		Identifier textureLocation = vanillarenderer.getTextureLocation(entitypatch.getOriginal());
 		
 		if (textureLocation == null) {
 			EpicFightMod.logAndStacktraceIfDevSide(Logger::warn, "No texture for " + entitypatch.getOriginal(), NullPointerException::new, "No texture is provided by vanilla renderer " + vanillarenderer.getClass().getSimpleName());
@@ -112,7 +112,7 @@ public class EntitySnapshot<T extends LivingEntityPatch<?>> {
 			
 			EquipmentSlot armorSlot = itemstack.getEquipmentSlot();
 			SkinnedMesh armor = WearableItemLayer.getCachedModel(itemstack.getItem());
-			ResourceLocation texture = WearableItemLayer.getArmorResource(entitypatch.getOriginal(), itemstack, armorSlot, null);
+			Identifier texture = WearableItemLayer.getArmorResource(entitypatch.getOriginal(), itemstack, armorSlot, null);
 			
 			if (armor != null) {
 				builder.add(new RenderableFigure(armor, texture));
@@ -152,7 +152,7 @@ public class EntitySnapshot<T extends LivingEntityPatch<?>> {
 		}
 	}
 	
-	public void renderTextured(PoseStack poseStack, MultiBufferSource buffers, Function<ResourceLocation, RenderType> rendertypeFunction, Mesh.DrawingFunction drawingFunction, int packedLight, float r, float g, float b, float a) {
+	public void renderTextured(PoseStack poseStack, MultiBufferSource buffers, Function<Identifier, RenderType> rendertypeFunction, Mesh.DrawingFunction drawingFunction, int packedLight, float r, float g, float b, float a) {
 		if (this.entityFigure.mesh == null || this.entityFigure.texture == null) {
 			return;
 		}
@@ -243,7 +243,7 @@ public class EntitySnapshot<T extends LivingEntityPatch<?>> {
 		}
 	}
 	
-	public record RenderableFigure(Mesh mesh, ResourceLocation texture) {
+	public record RenderableFigure(Mesh mesh, Identifier texture) {
 	}
 	
 	public static class PlayerSnapshot extends EntitySnapshot<AbstractClientPlayerPatch<?>> {
@@ -293,7 +293,7 @@ public class EntitySnapshot<T extends LivingEntityPatch<?>> {
 		}
 		
 		@Override
-		public void renderTextured(PoseStack poseStack, MultiBufferSource buffers, Function<ResourceLocation, RenderType> rendertypeFunction, Mesh.DrawingFunction drawingFunction, int packedLight, float r, float g, float b, float a) {
+		public void renderTextured(PoseStack poseStack, MultiBufferSource buffers, Function<Identifier, RenderType> rendertypeFunction, Mesh.DrawingFunction drawingFunction, int packedLight, float r, float g, float b, float a) {
 			super.renderTextured(poseStack, buffers, rendertypeFunction, drawingFunction, packedLight, r, g, b, a);
 			
 			if (this.capeFigure != null) {

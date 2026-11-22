@@ -7,7 +7,7 @@ import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
@@ -91,7 +91,7 @@ public final class CommonItemCapabilityProvider implements ICapabilityProvider<I
 				return;
 			}
 			
-			for (Map.Entry<ResourceLocation, ItemKeywordReloadListener.ItemRegex> regexEntry : ItemKeywordReloadListener.getRegexes().entrySet()) {
+			for (Map.Entry<Identifier, ItemKeywordReloadListener.ItemRegex> regexEntry : ItemKeywordReloadListener.getRegexes().entrySet()) {
 				if (regexEntry.getValue().matchesAny(entry.getKey().location().toString())) {
 					type = WeaponTypeReloadListener.get(regexEntry.getKey());
 					

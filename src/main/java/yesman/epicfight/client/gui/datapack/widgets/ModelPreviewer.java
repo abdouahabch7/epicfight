@@ -23,7 +23,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.*;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -91,7 +91,7 @@ public class ModelPreviewer extends AbstractWidget implements ResizableComponent
 	private NoEntityAnimator animator;
 	private AssetAccessor<? extends SkinnedMesh> mesh;
 	private AssetAccessor<? extends Armature> armature;
-	private ResourceLocation figureTexture;
+	private Identifier figureTexture;
 	
 	private Joint colliderJoint;
 	private Collider collider;
@@ -105,7 +105,7 @@ public class ModelPreviewer extends AbstractWidget implements ResizableComponent
 	
 	private ClothSimulator clothSimulator;
 	private SoftBodyTranslatable cloakMesh;
-	private ResourceLocation cloakTexture;
+	private Identifier cloakTexture;
 	private Vec3f cloakColor = new Vec3f(1.0F, 1.0F, 1.0F);
 	
 	public ModelPreviewer(int x1, int x2, int y1, int y2, HorizontalSizing horizontal, VerticalSizing vertical, AssetAccessor<? extends Armature> armature, AssetAccessor<? extends SkinnedMesh> mesh) {
@@ -138,11 +138,11 @@ public class ModelPreviewer extends AbstractWidget implements ResizableComponent
 		this.mesh = mesh;
 	}
 	
-	public void setFigureTexture(ResourceLocation texture) {
+	public void setFigureTexture(Identifier texture) {
 		this.figureTexture = texture;
 	}
 	
-	public void initCloakInfo(SoftBodyTranslatable cloakMesh, ResourceLocation cloakTexture, ClothSimulator.ClothObjectBuilder builder) {
+	public void initCloakInfo(SoftBodyTranslatable cloakMesh, Identifier cloakTexture, ClothSimulator.ClothObjectBuilder builder) {
 		this.cloakMesh = cloakMesh;
 		this.cloakTexture = cloakTexture;
 		
@@ -182,11 +182,11 @@ public class ModelPreviewer extends AbstractWidget implements ResizableComponent
 		return this.cloakMesh;
 	}
 	
-	public void setCloakTexture(ResourceLocation cloakTexture) {
+	public void setCloakTexture(Identifier cloakTexture) {
 		this.cloakTexture = cloakTexture;
 	}
 	
-	public ResourceLocation getCloakTexture() {
+	public Identifier getCloakTexture() {
 		return this.cloakTexture;
 	}
 	

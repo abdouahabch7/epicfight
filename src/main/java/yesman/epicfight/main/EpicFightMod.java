@@ -2,7 +2,7 @@ package yesman.epicfight.main;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
@@ -427,13 +427,13 @@ public class EpicFightMod {
 
 	/// @deprecated Use [yesman.epicfight.EpicFight#identifier(String)] instead
 	@Deprecated(forRemoval = true)
-	public static @NotNull ResourceLocation identifier(@NotNull String path) {
+	public static @NotNull Identifier identifier(@NotNull String path) {
         return EpicFight.identifier(path);
 	}
 
-	/// @deprecated Use [#identifier(String)] instead. [Mojang renamed `ResourceLocation` to `Identifier` in 1.21.11](https://neoforged.net/news/21.11release/#renaming-of-resourcelocation-to-identifier).
+	/// @deprecated Use [#identifier(String)] instead. [Mojang renamed `Identifier` to `Identifier` in 1.21.11](https://neoforged.net/news/21.11release/#renaming-of-resourcelocation-to-identifier).
 	@Deprecated(forRemoval = true)
-	public static @NotNull ResourceLocation rl(@NotNull String path) {
+	public static @NotNull Identifier rl(@NotNull String path) {
 		return identifier(path);
 	}
 }

@@ -10,7 +10,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
@@ -27,19 +27,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ItemKeywordReloadListener extends SimplePreparableReloadListener<Map<ResourceLocation, List<JsonElement>>> {
+public class ItemKeywordReloadListener extends SimplePreparableReloadListener<Map<Identifier, List<JsonElement>>> {
 	private static final String DIRECTORY = "capabilities/weapons/item_keyword";
 	private static final Gson GSON = new GsonBuilder().create();
 	
-	private static final Map<ResourceLocation, ItemRegex> REGEXES = new HashMap<> ();
+	private static final Map<Identifier, ItemRegex> REGEXES = new HashMap<> ();
 	private static final List<CompoundTag> COMPOUNDS = new ArrayList<> ();
 	
-	public static void scanDirectory(ResourceManager pResourceManager, String pName, Gson pGson, Map<ResourceLocation, List<JsonElement>> pOutput) {
+	public static void scanDirectory(ResourceManager pResourceManager, String pName, Gson pGson, Map<Identifier, List<JsonElement>> pOutput) {
 		FileToIdConverter filetoidconverter = FileToIdConverter.json(pName);
 		
-		for (Map.Entry<ResourceLocation, List<Resource>> entry : filetoidconverter.listMatchingResourceStacks(pResourceManager).entrySet()) {
-			ResourceLocation resourcelocation = entry.getKey();
-			ResourceLocation resourcelocation1 = filetoidconverter.fileToId(resourcelocation);
+		for (Map.Entry<Identifier, List<Resource>> entry : filetoidconverter.listMatchingResourceStacks(pResourceManager).entrySet()) {
+			Identifier resourcelocation = entry.getKey();
+			Identifier resourcelocation1 = filetoidconverter.fileToId(resourcelocation);
 			
 			for (Resource resource : entry.getValue()) {
 				try (Reader reader = resource.openAsReader()) {
@@ -54,18 +54,18 @@ public class ItemKeywordReloadListener extends SimplePreparableReloadListener<Ma
 	}
 	
 	@Override
-	protected Map<ResourceLocation, List<JsonElement>> prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler) {
-		Map<ResourceLocation, List<JsonElement>> map = new HashMap<> ();
+	protected Map<Identifier, List<JsonElement>> prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+		Map<Identifier, List<JsonElement>> map = new HashMap<> ();
 		scanDirectory(pResourceManager, DIRECTORY, GSON, map);
 		return map;
 	}
 	
 	@Override
-	protected void apply(Map<ResourceLocation, List<JsonElement>> packEntry, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+	protected void apply(Map<Identifier, List<JsonElement>> packEntry, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
 		REGEXES.clear();
 		COMPOUNDS.clear();
 		
-		Map<ResourceLocation, List<String>> regexMap = new HashMap<> ();
+		Map<Identifier, List<String>> regexMap = new HashMap<> ();
 		
 		packEntry.entrySet().stream()
 			.forEach(entry -> {
@@ -96,7 +96,7 @@ public class ItemKeywordReloadListener extends SimplePreparableReloadListener<Ma
 		});
 	}
 	
-	public static Map<ResourceLocation, ItemRegex> getRegexes() {
+	public static Map<Identifier, ItemRegex> getRegexes() {
 		return ImmutableMap.copyOf(REGEXES);
 	}
 	
@@ -110,7 +110,7 @@ public class ItemKeywordReloadListener extends SimplePreparableReloadListener<Ma
 			REGEXES.clear();
 			
 			for (CompoundTag tag : packet.tags()) {
-				ResourceLocation id = ResourceLocation.parse(tag.getString("registry_name"));
+				Identifier id = Identifier.parse(tag.getString("registry_name"));
 				REGEXES.put(id, ItemRegex.deserialize(tag));
 			}
 		}

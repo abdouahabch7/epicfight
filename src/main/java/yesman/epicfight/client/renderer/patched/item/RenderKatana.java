@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +30,7 @@ public class RenderKatana extends RenderItemBase {
 		super(jsonElement);
 		
 		if (jsonElement.getAsJsonObject().has("sheath")) {
-			this.sheathStack = new ItemStack(Objects.requireNonNull(BuiltInRegistries.ITEM.get(ResourceLocation.parse(jsonElement.getAsJsonObject().get("sheath").getAsString()))));
+			this.sheathStack = new ItemStack(Objects.requireNonNull(BuiltInRegistries.ITEM.get(Identifier.parse(jsonElement.getAsJsonObject().get("sheath").getAsString()))));
 		} else {
 			this.sheathStack = new ItemStack(EpicFightItems.UCHIGATANA_SHEATH.get());
 		}

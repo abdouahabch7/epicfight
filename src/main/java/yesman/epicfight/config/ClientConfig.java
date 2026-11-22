@@ -3,7 +3,7 @@ package yesman.epicfight.config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
@@ -234,10 +234,10 @@ public class ClientConfig {
         cameraPerspectiveToggleMode = CAMERA_PERSPECTIVE_TOGGLE_MODE.get();
 
         combatCategorizedItems = COMBAT_CATEGORIZED_ITEMS.get().stream()
-                .map(itemName -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemName)))
+                .map(itemName -> BuiltInRegistries.ITEM.get(Identifier.parse(itemName)))
                 .collect(Collectors.toSet());
         miningCategorizedItems = MINING_CATEGORIZED_ITEMS.get().stream()
-                .map(itemName -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemName)))
+                .map(itemName -> BuiltInRegistries.ITEM.get(Identifier.parse(itemName)))
                 .collect(Collectors.toSet());
 
         showTargetIndicator = SHOW_TARGET_INDICATOR.get();
@@ -468,7 +468,7 @@ public class ClientConfig {
 
         if (!combatCategorizedItems.equals(
             COMBAT_CATEGORIZED_ITEMS.get().stream()
-                .map(itemName -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemName)))
+                .map(itemName -> BuiltInRegistries.ITEM.get(Identifier.parse(itemName)))
                 .collect(Collectors.toSet())
         )
         ) {
@@ -478,14 +478,14 @@ public class ClientConfig {
             });
             discard.add(() -> {
                 combatCategorizedItems.clear();
-                combatCategorizedItems.addAll(COMBAT_CATEGORIZED_ITEMS.get().stream().map(itemStr -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemStr))).toList());
+                combatCategorizedItems.addAll(COMBAT_CATEGORIZED_ITEMS.get().stream().map(itemStr -> BuiltInRegistries.ITEM.get(Identifier.parse(itemStr))).toList());
             });
         }
 
         if (
             !miningCategorizedItems.equals(
                 MINING_CATEGORIZED_ITEMS.get().stream()
-                    .map(itemName -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemName)))
+                    .map(itemName -> BuiltInRegistries.ITEM.get(Identifier.parse(itemName)))
                     .collect(Collectors.toSet())
             )
         ) {
@@ -495,7 +495,7 @@ public class ClientConfig {
             });
             discard.add(() -> {
                 miningCategorizedItems.clear();
-                miningCategorizedItems.addAll(MINING_CATEGORIZED_ITEMS.get().stream().map(itemStr -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemStr))).toList());
+                miningCategorizedItems.addAll(MINING_CATEGORIZED_ITEMS.get().stream().map(itemStr -> BuiltInRegistries.ITEM.get(Identifier.parse(itemStr))).toList());
             });
         }
 

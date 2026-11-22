@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import yesman.epicfight.api.utils.math.MathUtils;
@@ -16,7 +16,7 @@ import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class RenderFilledMap extends RenderItemBase {
-	private static final RenderType MAP_BACKGROUND = RenderType.text(ResourceLocation.parse("textures/map/map_background.png"));
+	private static final RenderType MAP_BACKGROUND = RenderType.text(Identifier.parse("textures/map/map_background.png"));
 	
 	public RenderFilledMap(JsonElement jsonElement) {
 		super(jsonElement);

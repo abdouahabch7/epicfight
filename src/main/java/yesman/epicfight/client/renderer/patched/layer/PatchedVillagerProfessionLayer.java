@@ -44,11 +44,11 @@ public class PatchedVillagerProfessionLayer extends ModelRenderLayer<ZombieVilla
 				this.mesh.get().jacket.setHidden(true);
 			}
 	        
-			this.mesh.get().draw(postStack, buffer, RenderType.entityCutoutNoCull(vanillaLayer.getResourceLocation("type", BuiltInRegistries.VILLAGER_TYPE.getKey(villagerdata.getType()))),
+			this.mesh.get().draw(postStack, buffer, RenderType.entityCutoutNoCull(vanillaLayer.getIdentifier("type", BuiltInRegistries.VILLAGER_TYPE.getKey(villagerdata.getType()))),
 					packedLight, 1.0F, 1.0F, 1.0F, 1.0F, LivingEntityRenderer.getOverlayCoords(entityliving, 0.0F), entitypatch.getArmature(), poses);
 			
 			if (villagerdata.getProfession() != VillagerProfession.NONE) {
-				this.mesh.get().draw(postStack, buffer, RenderType.entityCutoutNoCull(vanillaLayer.getResourceLocation("profession", BuiltInRegistries.VILLAGER_PROFESSION.getKey(villagerdata.getProfession()))),
+				this.mesh.get().draw(postStack, buffer, RenderType.entityCutoutNoCull(vanillaLayer.getIdentifier("profession", BuiltInRegistries.VILLAGER_PROFESSION.getKey(villagerdata.getProfession()))),
 						packedLight, 1.0F, 1.0F, 1.0F, 1.0F, LivingEntityRenderer.getOverlayCoords(entityliving, 0.0F), entitypatch.getArmature(), poses);
 			}
 		}

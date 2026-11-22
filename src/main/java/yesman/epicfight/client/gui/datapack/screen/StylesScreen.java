@@ -22,7 +22,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import yesman.epicfight.api.utils.ParseUtil;
 import yesman.epicfight.client.gui.datapack.widgets.ComboBox;
 import yesman.epicfight.client.gui.datapack.widgets.Grid;
@@ -72,7 +72,7 @@ public class StylesScreen extends Screen {
 									for (Tag tag : caseCompound.getList("conditions", Tag.TAG_COMPOUND)) {
 										CompoundTag conditionCompound = (CompoundTag)tag;
 										parameters.newRow();
-										parameters.newValue("condition", EpicFightConditions.getConditionOrNull(ResourceLocation.parse(conditionCompound.getString("predicate"))));
+										parameters.newValue("condition", EpicFightConditions.getConditionOrNull(Identifier.parse(conditionCompound.getString("predicate"))));
 									}
 									
 									this.conditionGrid._setValue(parameters);
@@ -388,7 +388,7 @@ public class StylesScreen extends Screen {
 			
 			for (Tag conditionTag : tag.getList("conditions", Tag.TAG_COMPOUND)) {
 				CompoundTag conditionCompound = (CompoundTag)conditionTag;
-				Supplier<Condition<?>> condition = EpicFightConditions.getConditionOrThrow(ResourceLocation.parse(conditionCompound.getString("predicate")));
+				Supplier<Condition<?>> condition = EpicFightConditions.getConditionOrThrow(Identifier.parse(conditionCompound.getString("predicate")));
 				condition.get().read(conditionCompound);
 			}
 			

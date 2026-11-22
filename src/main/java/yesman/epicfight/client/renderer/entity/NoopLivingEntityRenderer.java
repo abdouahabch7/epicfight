@@ -6,7 +6,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -22,7 +22,7 @@ public class NoopLivingEntityRenderer<T extends LivingEntity> extends LivingEnti
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		return null;
 	}
 }

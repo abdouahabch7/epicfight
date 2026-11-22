@@ -19,7 +19,7 @@ import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableInt;
 import yesman.epicfight.api.utils.math.Vec3f;
@@ -381,13 +381,13 @@ public abstract class ParseUtil {
 		return sb.toString();
 	}
 
-    public static boolean canParseToResourceLocation(String str) {
+    public static boolean canParseToIdentifier(String str) {
         if (StringUtil.isNullOrEmpty(str)) {
             return true;
         }
 
         String[] astring = new String[]{"minecraft", str};
-        int i = str.indexOf(ResourceLocation.NAMESPACE_SEPARATOR);
+        int i = str.indexOf(Identifier.NAMESPACE_SEPARATOR);
 
         if (i >= 0) {
             astring[1] = str.substring(i + 1);
@@ -397,7 +397,7 @@ public abstract class ParseUtil {
             }
         }
 
-        return ResourceLocation.isValidNamespace(astring[0]) && ResourceLocation.isValidPath(astring[1]);
+        return Identifier.isValidNamespace(astring[0]) && Identifier.isValidPath(astring[1]);
     }
 
 	private ParseUtil() {}

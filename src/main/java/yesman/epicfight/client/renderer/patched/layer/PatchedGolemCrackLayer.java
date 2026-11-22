@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.IronGolemCrackinessLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Crackiness;
 import net.minecraft.world.entity.animal.IronGolem;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -19,10 +19,10 @@ import yesman.epicfight.client.mesh.IronGolemMesh;
 import yesman.epicfight.world.capabilities.entitypatch.mob.IronGolemPatch;
 
 public class PatchedGolemCrackLayer extends ModelRenderLayer<IronGolem, IronGolemPatch, IronGolemModel<IronGolem>, IronGolemCrackinessLayer, IronGolemMesh> {
-	private static final Map<Crackiness.Level, ResourceLocation> CRACK_MAP = ImmutableMap.of(
-			Crackiness.Level.LOW, ResourceLocation.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_low.png"),
-			Crackiness.Level.MEDIUM, ResourceLocation.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_medium.png"),
-			Crackiness.Level.HIGH, ResourceLocation.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_high.png"));
+	private static final Map<Crackiness.Level, Identifier> CRACK_MAP = ImmutableMap.of(
+			Crackiness.Level.LOW, Identifier.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_low.png"),
+			Crackiness.Level.MEDIUM, Identifier.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_medium.png"),
+			Crackiness.Level.HIGH, Identifier.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_high.png"));
 	
 	public PatchedGolemCrackLayer(AssetAccessor<IronGolemMesh> mesh) {
 		super(mesh);

@@ -9,7 +9,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -41,10 +41,10 @@ public class SkillReloadListener extends SimpleJsonResourceReloadListener {
 	}
 	
 	public static Skill getSkill(String name) {
-		ResourceLocation rl;
+		Identifier rl;
 		
 		if (name.indexOf(':') >= 0) {
-			rl = ResourceLocation.parse(name);
+			rl = Identifier.parse(name);
 		} else {
             rl = EpicFightMod.identifier(name);
 		}
@@ -60,7 +60,7 @@ public class SkillReloadListener extends SimpleJsonResourceReloadListener {
 		return EpicFightRegistries.SKILL.holders().map(Holder::value).filter(skill -> predicate.test(skill)).toList();
 	}
 	
-	public static Stream<ResourceLocation> getSkillNames(Predicate<Skill> predicate) {
+	public static Stream<Identifier> getSkillNames(Predicate<Skill> predicate) {
 		return EpicFightRegistries.SKILL.holders().map(Holder::value).filter(skill -> predicate.test(skill)).map(skill -> skill.getRegistryName());
 	}
 	
@@ -71,12 +71,12 @@ public class SkillReloadListener extends SimpleJsonResourceReloadListener {
     @ClientOnly
 	public static void processServerPacket(SPDatapackSync packet) {
 		for (CompoundTag tag : packet.tags()) {
-			if (!EpicFightRegistries.SKILL.containsKey(ResourceLocation.parse(tag.getString("id")))) {
+			if (!EpicFightRegistries.SKILL.containsKey(Identifier.parse(tag.getString("id")))) {
 				EpicFightMod.LOGGER.warn("Failed to syncronize Datapack for skill: " + tag.getString("id"));
 				continue;
 			}
 			
-			EpicFightRegistries.SKILL.get(ResourceLocation.parse(tag.getString("id"))).loadDatapackParameters(tag);
+			EpicFightRegistries.SKILL.get(Identifier.parse(tag.getString("id"))).loadDatapackParameters(tag);
 		}
 		
 		LocalPlayerPatch localplayerpatch = EpicFightCapabilities.getCachedLocalPlayerPatch();
@@ -96,7 +96,7 @@ public class SkillReloadListener extends SimpleJsonResourceReloadListener {
 		}
 	}
 	
-	private static Pair<ResourceLocation, CompoundTag> parseParameters(Map.Entry<ResourceLocation, JsonElement> entry) {
+	private static Pair<Identifier, CompoundTag> parseParameters(Map.Entry<Identifier, JsonElement> entry) {
 		try {
 			CompoundTag tag = TagParser.parseTag(entry.getValue().toString());
 			tag.putString("id", entry.getKey().toString());
@@ -122,7 +122,7 @@ public class SkillReloadListener extends SimpleJsonResourceReloadListener {
 	}
 	
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManager, ProfilerFiller profileFiller) {
+	protected void apply(Map<Identifier, JsonElement> objectIn, ResourceManager resourceManager, ProfilerFiller profileFiller) {
 		SKILL_PARAMS.clear();
 		
 		objectIn.entrySet().stream().filter((entry) -> {

@@ -25,7 +25,7 @@ import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -55,8 +55,8 @@ import yesman.epicfight.client.renderer.EpicFightRenderTypes;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class WearableItemLayer<E extends LivingEntity, T extends LivingEntityPatch<E>, M extends HumanoidModel<E>, AM extends HumanoidMesh> extends ModelRenderLayer<E, T, M, HumanoidArmorLayer<E, M, M>, AM> {
-	private static final Map<ResourceLocation, SkinnedMesh> ARMOR_MODELS = new HashMap<> ();
-	private static final Map<String, ResourceLocation> EPICFIGHT_OVERRIDING_TEXTURES = new HashMap<> ();
+	private static final Map<Identifier, SkinnedMesh> ARMOR_MODELS = new HashMap<> ();
+	private static final Map<String, Identifier> EPICFIGHT_OVERRIDING_TEXTURES = new HashMap<> ();
 	
 	public static void clearModels() {
 		ARMOR_MODELS.values().stream().filter(v -> v != null).forEach(SkinnedMesh::destroy);
@@ -64,7 +64,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingEntityPat
 		EPICFIGHT_OVERRIDING_TEXTURES.clear();
 	}
 	
-	public static void putModel(ResourceLocation rl, SkinnedMesh skinnedMesh) {
+	public static void putModel(Identifier rl, SkinnedMesh skinnedMesh) {
 		ARMOR_MODELS.computeIfPresent(rl, (key, mesh) -> {
 			if (mesh != skinnedMesh) mesh.destroy();
 			return mesh;
@@ -74,7 +74,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingEntityPat
 	}
 	
 	public static SkinnedMesh getCachedModel(Item item) {
-		ResourceLocation key = BuiltInRegistries.ITEM.getKey(item);
+		Identifier key = BuiltInRegistries.ITEM.getKey(item);
 		return ARMOR_MODELS.get(key);
 	}
 	
@@ -88,7 +88,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingEntityPat
 		this.armorTrimAtlas = modelManager.getAtlas(Sheets.ARMOR_TRIMS_SHEET);
 	}
 	
-	private void renderArmor(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, SkinnedMesh model, Armature armature, float r, float g, float b, ResourceLocation armorTexture, OpenMatrix4f[] poses) {
+	private void renderArmor(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, SkinnedMesh model, Armature armature, float r, float g, float b, Identifier armorTexture, OpenMatrix4f[] poses) {
 		model.draw(poseStack, multiBufferSource, RenderType.armorCutoutNoCull(armorTexture), packedLight, r, g, b, 1.0F, OverlayTexture.NO_OVERLAY, armature, poses);
 	}
 	
@@ -204,7 +204,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingEntityPat
 				boolean innerModel = innerModel(slot);
 
 				AnimatedArmorTextureEvent textureEvent = EpicFightClientEventHooks.Render.ANIMATED_ARMOR_TEXTURE.post(new AnimatedArmorTextureEvent(livingentity, itemstack, slot, vanillaModel));
-				ResourceLocation overriddenTexture = textureEvent.getResultLocation();
+				Identifier overriddenTexture = textureEvent.getResultLocation();
 
 				for (int layerIdx = 0; layerIdx < armormaterial.layers().size(); layerIdx++) {
 					ArmorMaterial.Layer armormaterial$layer = armormaterial.layers().get(layerIdx);
@@ -212,7 +212,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingEntityPat
 
 					if (packedColor != 0) {
 						Vector4f color = ColorUtil.unpackToARGBF(packedColor);
-						ResourceLocation texture = overriddenTexture != null
+						Identifier texture = overriddenTexture != null
 								? overriddenTexture
 								: ParseUtil.tryGetOr(() -> armorMesh.getRenderProperties().customTexturePath(), () -> ClientHooks.getArmorTexture(livingentity, itemstack, armormaterial$layer, innerModel, slot));
 						this.renderArmor(poseStack, buffers, packedLight, armorMesh, entitypatch.getArmature(), color.x, color.y, color.z, texture, poses);
@@ -235,13 +235,13 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingEntityPat
 	}
 	
 	private SkinnedMesh getArmorModel(HumanoidArmorLayer<E, M, M> originalRenderer, M originalModel, Model forgeHooksArmorModel, E entityliving, ArmorItem armorItem, ItemStack itemstack, EquipmentSlot slot) {
-		ResourceLocation registryName = BuiltInRegistries.ITEM.getKey(armorItem);
+		Identifier registryName = BuiltInRegistries.ITEM.getKey(armorItem);
 		
 		if (ARMOR_MODELS.containsKey(registryName) && !RenderEngine.getInstance().shouldRenderVanillaModel()) {
 			return ARMOR_MODELS.get(registryName);
 		} else {
 			ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
-			ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(BuiltInRegistries.ITEM.getKey(armorItem).getNamespace(), "animmodels/armor/" + BuiltInRegistries.ITEM.getKey(armorItem).getPath() + ".json");
+			Identifier rl = Identifier.fromNamespaceAndPath(BuiltInRegistries.ITEM.getKey(armorItem).getNamespace(), "animmodels/armor/" + BuiltInRegistries.ITEM.getKey(armorItem).getPath() + ".json");
 			SkinnedMesh skinnedMesh = null;
 			
 			if (resourceManager.getResource(rl).isPresent()) {
@@ -325,7 +325,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingEntityPat
 	/**
 	 * Code copy from {@link HumanoidArmorLayer#getArmorResource(Entity, ItemStack, EquipmentSlot, String)} since it's not a static
 	 */
-	public static ResourceLocation getArmorResource(Entity entity, ItemStack itemstack, EquipmentSlot slot, @Nullable String type) {
+	public static Identifier getArmorResource(Entity entity, ItemStack itemstack, EquipmentSlot slot, @Nullable String type) {
 		ArmorItem item = (ArmorItem) itemstack.getItem();
 		String texture = item.getMaterial().getRegisteredName();
 		String domain = "minecraft";
@@ -336,7 +336,7 @@ public class WearableItemLayer<E extends LivingEntity, T extends LivingEntityPat
 			texture = texture.substring(idx + 1);
 		}
 		
-		ResourceLocation rl = ResourceLocation.parse(String.format(java.util.Locale.ROOT, "%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (innerModel(slot) ? 2 : 1), type == null ? "" : String.format(java.util.Locale.ROOT, "_%s", type)));
+		Identifier rl = Identifier.parse(String.format(java.util.Locale.ROOT, "%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (innerModel(slot) ? 2 : 1), type == null ? "" : String.format(java.util.Locale.ROOT, "_%s", type)));
 		
 		return rl;
 	}

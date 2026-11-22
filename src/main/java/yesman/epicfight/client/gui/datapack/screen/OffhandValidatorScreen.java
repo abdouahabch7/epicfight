@@ -16,7 +16,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import yesman.epicfight.api.utils.ParseUtil;
 import yesman.epicfight.client.gui.datapack.widgets.Grid;
 import yesman.epicfight.client.gui.datapack.widgets.Grid.GridBuilder.RowEditButton;
@@ -153,7 +153,7 @@ public class OffhandValidatorScreen extends Screen {
 				this.conditionList.add(compTag);
 				
 				packImporter.newRow();
-				packImporter.newValue("condition", EpicFightConditions.getConditionOrNull(ResourceLocation.parse(compTag.getString("predicate"))));
+				packImporter.newValue("condition", EpicFightConditions.getConditionOrNull(Identifier.parse(compTag.getString("predicate"))));
 			}
 			
 			this.conditionGrid._setValue(packImporter);
@@ -230,7 +230,7 @@ public class OffhandValidatorScreen extends Screen {
 	
 	private void validateTagSave(CompoundTag tag) throws IllegalStateException {
 		try {
-			Supplier<Condition<?>> condition = EpicFightConditions.getConditionOrThrow(ResourceLocation.parse(tag.getString("predicate")));
+			Supplier<Condition<?>> condition = EpicFightConditions.getConditionOrThrow(Identifier.parse(tag.getString("predicate")));
 			condition.get().read(tag);
 		} catch (Exception e) {
 			throw new IllegalStateException(e.getMessage());

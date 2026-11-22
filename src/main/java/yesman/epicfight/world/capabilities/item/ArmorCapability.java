@@ -5,7 +5,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
@@ -80,7 +80,7 @@ public class ArmorCapability extends CapabilityItem {
 	public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiersForArmor() {
 		Multimap<Holder<Attribute>, AttributeModifier> map = HashMultimap.create();
 		
-		ResourceLocation modifierId = ResourceLocation.withDefaultNamespace("armor." + this.armorType.getName());
+		Identifier modifierId = Identifier.withDefaultNamespace("armor." + this.armorType.getName());
 		map.put(EpicFightAttributes.WEIGHT, new AttributeModifier(modifierId, this.weight, Operation.ADD_VALUE));
 		map.put(EpicFightAttributes.STUN_ARMOR, new AttributeModifier(modifierId, this.stunArmor, Operation.ADD_VALUE));
 		

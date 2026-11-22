@@ -12,7 +12,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec2;
 import yesman.epicfight.api.utils.math.Vec2i;
 import yesman.epicfight.client.gui.ScreenCalculations.AlignDirection;
@@ -165,7 +165,7 @@ public class HUDLocationsScreen extends Screen {
 
     public static class HUDComponent extends Button {
         protected final HUDLocationsScreen parentScreen;
-        protected final ResourceLocation texture;
+        protected final Identifier texture;
         protected int texU;
         protected int texV;
         protected int texW;
@@ -204,7 +204,7 @@ public class HUDLocationsScreen extends Screen {
             int g,
             int b,
             HUDLocationsScreen parentScreen,
-            ResourceLocation texture
+            Identifier texture
         ) {
 
             super(x, y, width, height, Component.literal(""), (button) -> {}, Button.DEFAULT_NARRATION);
@@ -373,10 +373,10 @@ public class HUDLocationsScreen extends Screen {
 
     public static class PassiveUIComponent extends HUDComponent {
         public final OptionHandler<AlignDirection> alignDirection;
-        protected final ResourceLocation texture2;
+        protected final Identifier texture2;
 
         public PassiveUIComponent(int x, int y, OptionHandler<Integer> xCoord, OptionHandler<Integer> yCoord, OptionHandler<HorizontalBasis> horizontalBasis, OptionHandler<VerticalBasis> verticalBasis, OptionHandler<AlignDirection> alignDirection
-            , int width, int height, int texU, int texV, int texW, int texH, int resolutionDivW, int resolutionDivH, int r, int g, int b, HUDLocationsScreen parentScreen, ResourceLocation texture, ResourceLocation texture2) {
+            , int width, int height, int texU, int texV, int texW, int texH, int resolutionDivW, int resolutionDivH, int r, int g, int b, HUDLocationsScreen parentScreen, Identifier texture, Identifier texture2) {
             super(x, y, xCoord, yCoord, horizontalBasis, verticalBasis, width, height, texU, texV, texW, texH, resolutionDivW, resolutionDivH, r, g, b, parentScreen, texture);
 
             this.popupScreen = new PassivesUIComponentPop(30, 44, this);
@@ -576,7 +576,7 @@ public class HUDLocationsScreen extends Screen {
         }
 
         public static class AlignButton extends Button {
-            private static final ResourceLocation BATTLE_ICONS = EpicFightMod.identifier("textures/gui/battle_icons.png");
+            private static final Identifier BATTLE_ICONS = EpicFightMod.identifier("textures/gui/battle_icons.png");
             private final OptionHandler<HorizontalBasis> horBasis;
             private final OptionHandler<VerticalBasis> verBasis;
             private final OptionHandler<AlignDirection> alignDirection;

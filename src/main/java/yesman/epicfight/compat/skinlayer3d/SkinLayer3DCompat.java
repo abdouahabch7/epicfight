@@ -21,7 +21,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -197,7 +197,7 @@ public class SkinLayer3DCompat implements ICompatModule {
 		
 		private static SkinnedMesh createEpicFight3DSkinLayer(AbstractClientPlayer player, PlayerModelPart playerModelPart, Mesh skinlayerModelPart, ModelPart vanillaModelPart, int width, int height, int depth, int textureU, int textureV, boolean topPivot, float rotationOffset) {
 			CustomizableCubeListBuilder builder = new CustomizableCubeListBuilder();
-            ResourceLocation skinLocation = PlayerUtil.getPlayerSkin(player);
+            Identifier skinLocation = PlayerUtil.getPlayerSkin(player);
 			NativeImage skinImage = SkinUtil.getTexture(skinLocation, null);
             
             if (SolidPixelWrapper.wrapBox(builder, new WrappedNativeImage(skinImage), width, height, depth, textureU, textureV, topPivot, rotationOffset) != null) {

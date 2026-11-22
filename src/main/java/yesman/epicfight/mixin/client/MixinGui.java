@@ -8,7 +8,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.HitResult;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.spongepowered.asm.mixin.Final;
@@ -54,12 +54,12 @@ public abstract class MixinGui {
 	@WrapOperation(
 			at = @At(
 					value = "INVOKE",
-					target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V",
+					target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/Identifier;IIII)V",
 					ordinal = 0
 			),
 			method = "renderCrosshair(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V"
 	)
-	private void renderCrosshairREDIRECT(GuiGraphics guiGraphics, ResourceLocation sprite, int x, int y, int width, int height, Operation<Void> original) {
+	private void renderCrosshairREDIRECT(GuiGraphics guiGraphics, Identifier sprite, int x, int y, int width, int height, Operation<Void> original) {
 		this.epicfight$renderCrosshair(guiGraphics, false, () -> original.call(guiGraphics, sprite, x, y, width, height));
 	}
 

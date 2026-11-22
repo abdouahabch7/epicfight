@@ -4,10 +4,10 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.logging.LogUtils;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SimpleTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.slf4j.Logger;
 
@@ -25,7 +25,7 @@ public class RemoteTexture extends SimpleTexture {
 	@Nullable
 	private CompletableFuture<?> future;
 	
-	public RemoteTexture(String pUrlString, ResourceLocation defaultLocation) {
+	public RemoteTexture(String pUrlString, Identifier defaultLocation) {
 		super(defaultLocation);
 		
 		this.urlString = pUrlString;

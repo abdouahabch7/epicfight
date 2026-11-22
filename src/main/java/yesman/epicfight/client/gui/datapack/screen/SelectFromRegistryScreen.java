@@ -24,7 +24,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.StringUtil;
 import yesman.epicfight.api.utils.ParseUtil;
 import yesman.epicfight.main.EpicFightMod;
@@ -47,7 +47,7 @@ public class SelectFromRegistryScreen<T> extends Screen {
 		this.minecraft = parentScreen.getMinecraft();
 		this.font = parentScreen.getMinecraft().font;
 		
-		final Map<ResourceLocation, T> filteredItems = Maps.newHashMap();
+		final Map<Identifier, T> filteredItems = Maps.newHashMap();
 		
 		registry.holders().map(Holder::value).filter(filter).forEach((value) -> filteredItems.put(registry.getKey(value), value));
 		
@@ -57,14 +57,14 @@ public class SelectFromRegistryScreen<T> extends Screen {
 		this.onCancel = onCancel;
 	}
 	
-	public SelectFromRegistryScreen(Screen parentScreen, Set<Pair<ResourceLocation, T>> entries, String title, BiConsumer<String, T> onAccept, BiConsumer<String, T> onCancel, Consumer<T> onPressRow, Predicate<T> filter) {
+	public SelectFromRegistryScreen(Screen parentScreen, Set<Pair<Identifier, T>> entries, String title, BiConsumer<String, T> onAccept, BiConsumer<String, T> onCancel, Consumer<T> onPressRow, Predicate<T> filter) {
 		super(Component.translatable("gui.epicfight.select", ParseUtil.snakeToSpacedCamel(title)));
 		
 		this.parentScreen = parentScreen;
 		this.minecraft = parentScreen.getMinecraft();
 		this.font = this.minecraft.font;
 		
-		Map<ResourceLocation, T> filteredItems = entries.stream().filter((entry) -> filter.test(entry.getSecond())).reduce(Maps.newHashMap(), (map, element) -> {
+		Map<Identifier, T> filteredItems = entries.stream().filter((entry) -> filter.test(entry.getSecond())).reduce(Maps.newHashMap(), (map, element) -> {
 			map.put(element.getFirst(), element.getSecond());
 			return map;
 		}, (map1, map2) -> {
@@ -125,9 +125,9 @@ public class SelectFromRegistryScreen<T> extends Screen {
 	}
 	
 	class RegistryList extends ObjectSelectionList<RegistryList.RegistryEntry> {
-		private final Map<ResourceLocation, T> registry;
+		private final Map<Identifier, T> registry;
 		
-		public RegistryList(Minecraft minecraft, int width, int height, int y, int itemHeight, Map<ResourceLocation, T> registry) {
+		public RegistryList(Minecraft minecraft, int width, int height, int y, int itemHeight, Map<Identifier, T> registry) {
 			super(minecraft, width, height, y, itemHeight);
 			
 			this.registry = registry;

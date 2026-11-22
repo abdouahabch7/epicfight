@@ -14,7 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.sounds.SoundEvent;
@@ -57,7 +57,7 @@ public class ItemCapabilityReloadListener extends SimpleJsonResourceReloadListen
 	}
 	
 	@Override
-	protected Map<ResourceLocation, JsonElement> prepare(@NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profileIn) {
+	protected Map<Identifier, JsonElement> prepare(@NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profileIn) {
 		ARMOR_COMPOUNDS.clear();
 		WEAPON_COMPOUNDS.clear();
 		
@@ -65,14 +65,14 @@ public class ItemCapabilityReloadListener extends SimpleJsonResourceReloadListen
 	}
 	
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objectIn, @NotNull ResourceManager resourceManagerIn, @NotNull ProfilerFiller profilerIn) {
-		for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {
-			ResourceLocation rl = entry.getKey();
+	protected void apply(Map<Identifier, JsonElement> objectIn, @NotNull ResourceManager resourceManagerIn, @NotNull ProfilerFiller profilerIn) {
+		for (Map.Entry<Identifier, JsonElement> entry : objectIn.entrySet()) {
+			Identifier rl = entry.getKey();
 			String path = rl.getPath();
 			
 			if (path.contains("/") && !path.contains("types") && !path.contains("item_keyword")) {
 				String[] str = path.split("/", 2);
-				ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), str[1]);
+				Identifier registryName = Identifier.fromNamespaceAndPath(rl.getNamespace(), str[1]);
 				
 				if (!BuiltInRegistries.ITEM.containsKey(registryName)) {
 					EpicFight.LOGGER.warn("Item Capability Exception: No item named {}", registryName);
@@ -108,7 +108,7 @@ public class ItemCapabilityReloadListener extends SimpleJsonResourceReloadListen
 		EpicFightCapabilities.ITEM_CAPABILITY_PROVIDER.addDefaultItems();
 	}
 
-    private static void warnDeserialize(ResourceLocation registryName, Exception e) {
+    private static void warnDeserialize(Identifier registryName, Exception e) {
         EpicFight.LOGGER.warn("Error while deserializing datapack for {}: {}", registryName, e.getLocalizedMessage());
     }
 
@@ -126,7 +126,7 @@ public class ItemCapabilityReloadListener extends SimpleJsonResourceReloadListen
 	}
 
     private static void setSound(String location, Function<Holder<SoundEvent>, WeaponCapability.Builder> setter) {
-        ResourceLocation soundLocation = ResourceLocation.parse(location);
+        Identifier soundLocation = Identifier.parse(location);
         Holder<SoundEvent> sound = BuiltInRegistries.SOUND_EVENT.getHolder(soundLocation).get();
         setter.apply(sound);
     }
@@ -162,7 +162,7 @@ public class ItemCapabilityReloadListener extends SimpleJsonResourceReloadListen
 			
 			for (Tag jsonElement : jsonArray) {
 				CompoundTag innerTag = ((CompoundTag)jsonElement);
-				Supplier<Condition<ItemStack>> conditionProvider = EpicFightConditions.getConditionOrThrow(ResourceLocation.parse(innerTag.getString("condition")));
+				Supplier<Condition<ItemStack>> conditionProvider = EpicFightConditions.getConditionOrThrow(Identifier.parse(innerTag.getString("condition")));
 				Condition<ItemStack> condition = conditionProvider.get().read(innerTag.getCompound("predicate"));
 				
 				list.add(Pair.of(condition, deserializeWeapon(item, innerTag)));
@@ -193,7 +193,7 @@ public class ItemCapabilityReloadListener extends SimpleJsonResourceReloadListen
 
 				for (var key : data.getAllKeys()) {
 					//Debugging
-					Optional<Holder.Reference<CustomData<?>>> trueData = EpicFightRegistries.WEAPON_DATA.getHolder(ResourceLocation.parse(key));
+					Optional<Holder.Reference<CustomData<?>>> trueData = EpicFightRegistries.WEAPON_DATA.getHolder(Identifier.parse(key));
 					if (trueData.isPresent())
 					{
 						if (trueData.get().value().deserializer().isPresent()) {
@@ -218,7 +218,7 @@ public class ItemCapabilityReloadListener extends SimpleJsonResourceReloadListen
                 }
                 if (tag.contains("hit_particle"))
                 {
-                    ResourceLocation hitParticleLocation = ResourceLocation.parse(tag.getString("hit_particle"));
+                    Identifier hitParticleLocation = Identifier.parse(tag.getString("hit_particle"));
                     Holder<ParticleType<?>> hitParticle = BuiltInRegistries.PARTICLE_TYPE.getHolder(hitParticleLocation).get();
                     if (hitParticle.value() instanceof HitParticleType trueParticle)
                     {
@@ -232,7 +232,7 @@ public class ItemCapabilityReloadListener extends SimpleJsonResourceReloadListen
 
                 if (tag.contains("custom_tags")) {
                     for (Tag customTag : tag.getList("custom_tags", Tag.TAG_STRING)) {
-                        weaponBuilder.addTag(ResourceLocation.parse(customTag.getAsString()));
+                        weaponBuilder.addTag(Identifier.parse(customTag.getAsString()));
                     }
                 }
             }

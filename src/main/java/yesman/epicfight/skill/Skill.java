@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -93,7 +93,7 @@ public abstract class Skill implements IdentifierProvider {
 	public static final Skill EMPTY = new Skill() {};
 	
 	private final Map<Holder<Attribute>, AttributeModifier> attributes = new HashMap<> ();
-	protected final ResourceLocation registryName;
+	protected final Identifier registryName;
 	protected final SkillCategory category;
 	protected final CreativeModeTab creativeTab;
 	protected final ActivateType activateType;
@@ -420,7 +420,7 @@ public abstract class Skill implements IdentifierProvider {
 		EpicFightNetworkManager.sendToPlayer(SPSetSkillContainerValue.maxResource(skillContainer.getSlot(), fVal, skillContainer.getExecutor().getOriginal().getId()), skillContainer.getServerExecutor().getOriginal());
 	}
 
-	public ResourceLocation getRegistryName() {
+	public Identifier getRegistryName() {
 		return this.registryName;
 	}
 
@@ -499,8 +499,8 @@ public abstract class Skill implements IdentifierProvider {
 	}
 
     @ClientOnly
-	public ResourceLocation getSkillTexture() {
-		return ResourceLocation.fromNamespaceAndPath(this.getRegistryName().getNamespace(), String.format("textures/gui/skills/%s/%s.png", this.category.toString().toLowerCase(Locale.ROOT), this.getRegistryName().getPath()));
+	public Identifier getSkillTexture() {
+		return Identifier.fromNamespaceAndPath(this.getRegistryName().getNamespace(), String.format("textures/gui/skills/%s/%s.png", this.category.toString().toLowerCase(Locale.ROOT), this.getRegistryName().getPath()));
 	}
 
     @ClientOnly
@@ -514,7 +514,7 @@ public abstract class Skill implements IdentifierProvider {
 	}
 
     @Override
-    public ResourceLocation getId() {
+    public Identifier getId() {
         return this.getRegistryName();
     }
 

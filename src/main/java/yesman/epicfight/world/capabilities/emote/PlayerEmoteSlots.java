@@ -7,7 +7,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.client.online.cosmetics.Emote;
@@ -56,7 +56,7 @@ public class PlayerEmoteSlots {
                 if (emoteName.isEmpty()) {
                     page.emotes[slotIndex.getValue()] = null;
                 } else {
-                    ResourceKey<Emote> emoteResourceKey = ResourceKey.create(EpicFightRegistries.Keys.EMOTE, ResourceLocation.parse(emoteName));
+                    ResourceKey<Emote> emoteResourceKey = ResourceKey.create(EpicFightRegistries.Keys.EMOTE, Identifier.parse(emoteName));
                     Optional<Holder.Reference<Emote>> emoteHolder = registryAccess.holder(emoteResourceKey);
 
                     emoteHolder.ifPresentOrElse(emote -> {

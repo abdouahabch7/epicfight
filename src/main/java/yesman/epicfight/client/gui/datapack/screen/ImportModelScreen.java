@@ -16,7 +16,7 @@ import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.asset.JsonAssetLoader;
 import yesman.epicfight.api.asset.SelfAccessor;
@@ -64,7 +64,7 @@ public class ImportModelScreen extends Screen {
 									this.modelPreviewer.setMesh(this.userMeshes.get(rowposition).getValue());
 								})
 								.addColumn(Grid.editbox("mesh_name")
-												.editWidgetCreated((editbox) -> editbox.setFilter(rl -> ResourceLocation.isValidNamespace(rl) && ResourceLocation.isValidPath(rl)))
+												.editWidgetCreated((editbox) -> editbox.setFilter(rl -> Identifier.isValidNamespace(rl) && Identifier.isValidPath(rl)))
 												.valueChanged((event) -> this.userMeshes.get(event.rowposition).setPackKey(event.postValue))
 												.editable(true)
 												.width(180))
@@ -79,7 +79,7 @@ public class ImportModelScreen extends Screen {
 								.rowHeight(26)
 								.rowEditable(RowEditButton.REMOVE)
 								.addColumn(Grid.editbox("armature_name")
-												.editWidgetCreated((editbox) -> editbox.setFilter(rl -> ResourceLocation.isValidNamespace(rl) && ResourceLocation.isValidPath(rl)))
+												.editWidgetCreated((editbox) -> editbox.setFilter(rl -> Identifier.isValidNamespace(rl) && Identifier.isValidPath(rl)))
 												.valueChanged((event) -> this.userArmatures.get(event.rowposition).setPackKey(event.postValue))
 												.editable(true)
 												.width(180))
@@ -122,14 +122,14 @@ public class ImportModelScreen extends Screen {
 		this.addRenderableWidget(this.modelPreviewer);
 		
 		this.addRenderableWidget(Button.builder(CommonComponents.GUI_OK, (button) -> {
-			Map<ResourceLocation, AssetAccessor<? extends SkinnedMesh>> userMeshes = DatapackEditScreen.getCurrentScreen().getUserMeshes();
-			Map<ResourceLocation, AssetAccessor<? extends Armature>> userArmatures = DatapackEditScreen.getCurrentScreen().getUserArmatures();
+			Map<Identifier, AssetAccessor<? extends SkinnedMesh>> userMeshes = DatapackEditScreen.getCurrentScreen().getUserMeshes();
+			Map<Identifier, AssetAccessor<? extends Armature>> userArmatures = DatapackEditScreen.getCurrentScreen().getUserArmatures();
 			
 			userMeshes.clear();
 			userArmatures.clear();
 			
-			this.userMeshes.forEach((packEntry) -> userMeshes.put(ResourceLocation.parse(packEntry.getKey()), packEntry.getValue()));
-			this.userArmatures.forEach((packEntry) -> userArmatures.put(ResourceLocation.parse(packEntry.getKey()), packEntry.getValue()));
+			this.userMeshes.forEach((packEntry) -> userMeshes.put(Identifier.parse(packEntry.getKey()), packEntry.getValue()));
+			this.userArmatures.forEach((packEntry) -> userArmatures.put(Identifier.parse(packEntry.getKey()), packEntry.getValue()));
 			
 			this.onClose();
 		}).pos(this.width / 2 - 162, this.height - 26).size(160, 21).build());
@@ -166,7 +166,7 @@ public class ImportModelScreen extends Screen {
 						stream = new FileInputStream(file);
 						
 						String modelPath = modid + ":" + file.getName().replace(".json", "");
-						ResourceLocation modelId = ResourceLocation.parse(modelPath);
+						Identifier modelId = Identifier.parse(modelPath);
 						JsonAssetLoader jsonLoader = new JsonAssetLoader(stream, modelId);
 						SkinnedMesh mesh = jsonLoader.loadSkinnedMesh(SkinnedMesh::new);
 						Armature armature = jsonLoader.loadArmature(Armature::new);

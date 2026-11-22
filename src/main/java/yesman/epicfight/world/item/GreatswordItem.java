@@ -1,6 +1,6 @@
 package yesman.epicfight.world.item;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -10,7 +10,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import yesman.epicfight.world.capabilities.item.WeaponCapabilityPresets;
 
 public class GreatswordItem extends TieredWeaponItem {
-	public static final ResourceLocation GREATSWORD_MOVEMENT_SPEED_PENALTY_ID = ResourceLocation.withDefaultNamespace("greatsword_movement_speed_penalty");
+	public static final Identifier GREATSWORD_MOVEMENT_SPEED_PENALTY_ID = Identifier.withDefaultNamespace("greatsword_movement_speed_penalty");
 	
 	public static ItemAttributeModifiers createGreatswordAttributes(Tier tier) {
         return createGreatswordAttributes(11.0F + tier.getAttackDamageBonus(), -2.85F + WeaponCapabilityPresets.vanillaTierToLevel(tier) * -0.05F);

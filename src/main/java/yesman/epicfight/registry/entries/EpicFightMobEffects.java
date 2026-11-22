@@ -1,7 +1,7 @@
 package yesman.epicfight.registry.entries;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffects;
@@ -25,7 +25,7 @@ public final class EpicFightMobEffects {
 	);
 	
 	//public static final RegistryObject<MobEffect> BLOOMING = EFFECTS.register("blooming", () -> 
-	//	new VisibleMobEffect(MobEffectCategory.BENEFICIAL, 16735744, new ResourceLocation(EpicFightMod.MODID, "textures/mob_effect/blooming.png")));
+	//	new VisibleMobEffect(MobEffectCategory.BENEFICIAL, 16735744, new Identifier(EpicFightMod.MODID, "textures/mob_effect/blooming.png")));
 	
 	public static final DeferredHolder<MobEffect, VisibleMobEffect> INSTABILITY = REGISTRY.register("instability", () -> 
 		new VisibleMobEffect(

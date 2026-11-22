@@ -8,12 +8,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.PlayerInfo;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -263,7 +263,7 @@ public class AuthenticationHelperImpl implements AuthenticationHelper {
     public void loadPlayerSkin() {
         this.playerInfo = new PlayerInfo(Minecraft.getInstance().getGameProfile(), false);
         // Indirectly call registerTextures that loads the player's skin textures
-        ResourceLocation rl = this.playerInfo.getSkin().texture();
+        Identifier rl = this.playerInfo.getSkin().texture();
     }
 
 	public void setStatus(Status status) {

@@ -16,7 +16,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -142,7 +142,7 @@ public class CombatBehaviorScreen extends Screen {
 						}
 						
 						conditionImporter.newRow();
-						conditionImporter.newValue("condition", EpicFightConditions.getConditionOrNull(ResourceLocation.parse(condtionName)));
+						conditionImporter.newValue("condition", EpicFightConditions.getConditionOrNull(Identifier.parse(condtionName)));
 					}
 					
 					this.parameterGrid.reset();
@@ -564,7 +564,7 @@ public class CombatBehaviorScreen extends Screen {
 				}
 				
 				try {
-					Supplier<Condition<?>> condition = EpicFightConditions.getConditionOrThrow(ResourceLocation.parse(conditionCompound.getString("predicate")));
+					Supplier<Condition<?>> condition = EpicFightConditions.getConditionOrThrow(Identifier.parse(conditionCompound.getString("predicate")));
 					condition.get().read(conditionCompound);
 				} catch (Exception e) {
 					throw new IllegalStateException("Behavior" + idx + ": " + e.getMessage());

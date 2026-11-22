@@ -2,7 +2,7 @@ package yesman.epicfight.client.renderer.patched.item;
 
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.registry.entries.EpicFightItems;
 import yesman.epicfight.skill.Skill;

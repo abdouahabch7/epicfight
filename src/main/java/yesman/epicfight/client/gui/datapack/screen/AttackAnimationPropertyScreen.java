@@ -15,7 +15,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.types.datapack.EditorAnimation;
@@ -311,7 +311,7 @@ public class AttackAnimationPropertyScreen extends Screen {
 		
 		guiGraphics.drawString(this.font, this.title, 20, 16, 16777215);
 		
-		ResourceLocation backgroundTexture = this.minecraft.level == null ? MENU_BACKGROUND : INWORLD_MENU_BACKGROUND;
+		Identifier backgroundTexture = this.minecraft.level == null ? MENU_BACKGROUND : INWORLD_MENU_BACKGROUND;
 		
 		guiGraphics.setColor(0.125F, 0.125F, 0.125F, 1.0F);
         guiGraphics.blit(backgroundTexture, 0, yBegin, (float)this.width, (float)yEnd - yBegin, this.width, yEnd, 32, 32);

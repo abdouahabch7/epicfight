@@ -20,7 +20,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.InteractionHand;
@@ -127,25 +127,25 @@ public class RenderEngine implements IEventBasedEngine {
         this.fakeBlockRenderer = fakeBlockRenderer;
     }
 
-    public void reloadItemRenderers(Map<ResourceLocation, JsonElement> objects) {
+    public void reloadItemRenderers(Map<Identifier, JsonElement> objects) {
         //Clear item renderers
         this.itemRendererMapByInstance.clear();
         this.itemRendererMapByClass.clear();
 
-        Map<ResourceLocation, Function<JsonElement, RenderItemBase>> itemRenderers = new HashMap<> ();
-        itemRenderers.put(ResourceLocation.withDefaultNamespace("base"), RenderItemBase::new);
-        itemRenderers.put(ResourceLocation.withDefaultNamespace("ranged"), RenderTwoHandedRangedWeapon::new);
-        itemRenderers.put(ResourceLocation.withDefaultNamespace("map"), RenderFilledMap::new);
-        itemRenderers.put(ResourceLocation.withDefaultNamespace("shield"), RenderShield::new);
-        itemRenderers.put(ResourceLocation.withDefaultNamespace("trident"), RenderTrident::new);
+        Map<Identifier, Function<JsonElement, RenderItemBase>> itemRenderers = new HashMap<> ();
+        itemRenderers.put(Identifier.withDefaultNamespace("base"), RenderItemBase::new);
+        itemRenderers.put(Identifier.withDefaultNamespace("ranged"), RenderTwoHandedRangedWeapon::new);
+        itemRenderers.put(Identifier.withDefaultNamespace("map"), RenderFilledMap::new);
+        itemRenderers.put(Identifier.withDefaultNamespace("shield"), RenderShield::new);
+        itemRenderers.put(Identifier.withDefaultNamespace("trident"), RenderTrident::new);
         itemRenderers.put(EpicFight.identifier("uchigatana"), RenderKatana::new);
 
         EpicFightClientEventHooks.Registry.PATCHED_ITEM.post(new RegisterPatchedRenderersEvent.Item(itemRenderers));
 
-        for (Map.Entry<ResourceLocation, JsonElement> entry : objects.entrySet()) {
-            ResourceLocation rl = entry.getKey();
+        for (Map.Entry<Identifier, JsonElement> entry : objects.entrySet()) {
+            Identifier rl = entry.getKey();
             String pathString = rl.getPath();
-            ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), pathString);
+            Identifier registryName = Identifier.fromNamespaceAndPath(rl.getNamespace(), pathString);
 
             if (!BuiltInRegistries.ITEM.containsKey(registryName)) {
                 EpicFight.LOGGER.warn("Failed to load item skin: no item named " + registryName);
@@ -156,7 +156,7 @@ public class RenderEngine implements IEventBasedEngine {
             Function<JsonElement, RenderItemBase> rendererProvider;
 
             if (entry.getValue().getAsJsonObject().has("renderer")) {
-                ResourceLocation rendererName = ResourceLocation.parse(entry.getValue().getAsJsonObject().get("renderer").getAsString());
+                Identifier rendererName = Identifier.parse(entry.getValue().getAsJsonObject().get("renderer").getAsString());
 
                 if (itemRenderers.containsKey(rendererName)) {
                     rendererProvider = itemRenderers.get(rendererName);
@@ -217,12 +217,12 @@ public class RenderEngine implements IEventBasedEngine {
             this.entityRendererCache.put(entityType, this.basicHumanoidRenderer);
         } else if ("epicfight:custom".equals(rendererName)) {
             if (compound.getBoolean("humanoid")) {
-                this.entityRendererCache.put(entityType, new PCustomHumanoidEntityRenderer<> (Meshes.getOrCreate(ResourceLocation.parse(compound.getString("model")), (jsonAssetLoader) -> jsonAssetLoader.loadSkinnedMesh(HumanoidMesh::new)), context, entityType));
+                this.entityRendererCache.put(entityType, new PCustomHumanoidEntityRenderer<> (Meshes.getOrCreate(Identifier.parse(compound.getString("model")), (jsonAssetLoader) -> jsonAssetLoader.loadSkinnedMesh(HumanoidMesh::new)), context, entityType));
             } else {
-                this.entityRendererCache.put(entityType, new PCustomEntityRenderer(Meshes.getOrCreate(ResourceLocation.parse(compound.getString("model")), (jsonAssetLoader) -> jsonAssetLoader.loadSkinnedMesh(HumanoidMesh::new)), context));
+                this.entityRendererCache.put(entityType, new PCustomEntityRenderer(Meshes.getOrCreate(Identifier.parse(compound.getString("model")), (jsonAssetLoader) -> jsonAssetLoader.loadSkinnedMesh(HumanoidMesh::new)), context));
             }
         } else {
-            EntityType<?> presetEntityType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(rendererName));
+            EntityType<?> presetEntityType = BuiltInRegistries.ENTITY_TYPE.get(Identifier.parse(rendererName));
 
             if (this.entityRendererProvider.containsKey(presetEntityType)) {
                 PatchedEntityRenderer renderer = this.entityRendererProvider.get(presetEntityType).apply(entityType);
@@ -287,8 +287,8 @@ public class RenderEngine implements IEventBasedEngine {
         return this.entityRendererCache.computeIfAbsent(entity.getType(), (key) -> this.entityRendererProvider.containsKey(key) ? this.entityRendererProvider.get(entity.getType()).apply(entity.getType()) : null) != null;
     }
 
-    public Set<ResourceLocation> getRendererEntries() {
-        Set<ResourceLocation> availableRendererEntities = this.entityRendererProvider.keySet().stream().map((entityType) -> EntityType.getKey(entityType)).collect(Collectors.toSet());
+    public Set<Identifier> getRendererEntries() {
+        Set<Identifier> availableRendererEntities = this.entityRendererProvider.keySet().stream().map((entityType) -> EntityType.getKey(entityType)).collect(Collectors.toSet());
         availableRendererEntities.add(EpicFight.identifier("custom"));
 
         return availableRendererEntities;
@@ -600,8 +600,8 @@ public class RenderEngine implements IEventBasedEngine {
         }
     }
 
-    private static final ResourceLocation YELLOWBAR_BACKGROUND = ResourceLocation.withDefaultNamespace("boss_bar/yellow_background");
-    private static final ResourceLocation YELLOWBAR_PROGRESS = ResourceLocation.withDefaultNamespace("boss_bar/yellow_progress");
+    private static final Identifier YELLOWBAR_BACKGROUND = Identifier.withDefaultNamespace("boss_bar/yellow_background");
+    private static final Identifier YELLOWBAR_PROGRESS = Identifier.withDefaultNamespace("boss_bar/yellow_progress");
 
     private void epicfight$bossEventProgress(CustomizeGuiOverlayEvent.BossEventProgress event) {
         if (event.getBossEvent().getName().getString().equals("Ender Dragon")) {

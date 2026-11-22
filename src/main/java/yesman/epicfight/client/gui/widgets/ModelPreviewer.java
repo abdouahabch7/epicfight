@@ -25,7 +25,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.*;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -100,7 +100,7 @@ public class ModelPreviewer extends AbstractContainerWidget implements AnchoredW
     @Nullable
 	private AssetAccessor<? extends Armature> armature;
     @Nullable
-	private ResourceLocation figureTexture;
+	private Identifier figureTexture;
 
     @Nullable
 	private Joint colliderJoint;
@@ -120,7 +120,7 @@ public class ModelPreviewer extends AbstractContainerWidget implements AnchoredW
     @Nullable
     private SoftBodyTranslatable cloakMesh;
     @Nullable
-    private ResourceLocation cloakTexture;
+    private Identifier cloakTexture;
 	private Vec3f cloakColor = new Vec3f(1.0F, 1.0F, 1.0F);
 
 	public ModelPreviewer(
@@ -204,11 +204,11 @@ public class ModelPreviewer extends AbstractContainerWidget implements AnchoredW
 		this.mesh = mesh;
 	}
 
-	public void setFigureTexture(ResourceLocation texture) {
+	public void setFigureTexture(Identifier texture) {
 		this.figureTexture = texture;
 	}
 
-	public void initCloakInfo(SoftBodyTranslatable cloakMesh, ResourceLocation cloakTexture, @Nullable ClothSimulator.ClothObjectBuilder builder) {
+	public void initCloakInfo(SoftBodyTranslatable cloakMesh, Identifier cloakTexture, @Nullable ClothSimulator.ClothObjectBuilder builder) {
 		this.cloakMesh = cloakMesh;
 		this.cloakTexture = cloakTexture;
 		
@@ -249,12 +249,12 @@ public class ModelPreviewer extends AbstractContainerWidget implements AnchoredW
 		return this.cloakMesh;
 	}
 	
-	public void setCloakTexture(ResourceLocation cloakTexture) {
+	public void setCloakTexture(Identifier cloakTexture) {
 		this.cloakTexture = cloakTexture;
 	}
 
     @Nullable
-	public ResourceLocation getCloakTexture() {
+	public Identifier getCloakTexture() {
 		return this.cloakTexture;
 	}
 

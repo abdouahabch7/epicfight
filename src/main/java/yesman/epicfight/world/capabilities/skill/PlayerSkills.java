@@ -2,7 +2,7 @@ package yesman.epicfight.world.capabilities.skill;
 
 import com.google.common.collect.HashMultimap;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.api.utils.ParseUtil;
@@ -193,7 +193,7 @@ public class PlayerSkills {
 			String key = ParseUtil.toLowerCase(container.getSlot().toString());
 			
 			if (skillCompound.contains(key)) {
-				EpicFightRegistries.SKILL.getHolder(ResourceLocation.parse(skillCompound.getString(key))).ifPresent(skill -> {
+				EpicFightRegistries.SKILL.getHolder(Identifier.parse(skillCompound.getString(key))).ifPresent(skill -> {
 					container.setSkill(skill.value());
 					this.addLearnedSkill(skill.value());
 				});
@@ -205,7 +205,7 @@ public class PlayerSkills {
 				CompoundTag learnedNBT = skillCompound.getCompound("learned:" + ParseUtil.toLowerCase(category.toString()));
 				
 				for (String key : learnedNBT.getAllKeys()) {
-					EpicFightRegistries.SKILL.getHolder(ResourceLocation.parse(learnedNBT.getString(key))).ifPresent(skill -> {
+					EpicFightRegistries.SKILL.getHolder(Identifier.parse(learnedNBT.getString(key))).ifPresent(skill -> {
 						this.addLearnedSkill(skill.value());
 					});
 				}

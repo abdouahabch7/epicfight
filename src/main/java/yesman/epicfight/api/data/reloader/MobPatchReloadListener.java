@@ -15,7 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.sounds.SoundEvent;
@@ -74,18 +74,18 @@ public class MobPatchReloadListener extends SimpleJsonResourceReloadListener {
 	}
 	
 	@Override
-	protected Map<ResourceLocation, JsonElement> prepare(ResourceManager resourceManager, ProfilerFiller profileIn) {
+	protected Map<Identifier, JsonElement> prepare(ResourceManager resourceManager, ProfilerFiller profileIn) {
 		MOB_PATCH_PROVIDERS.clear();
 		TAGMAP.clear();
 		return super.prepare(resourceManager, profileIn);
 	}
 	
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManager, ProfilerFiller profilerIn) {
-		for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {
-			ResourceLocation rl = entry.getKey();
+	protected void apply(Map<Identifier, JsonElement> objectIn, ResourceManager resourceManager, ProfilerFiller profilerIn) {
+		for (Map.Entry<Identifier, JsonElement> entry : objectIn.entrySet()) {
+			Identifier rl = entry.getKey();
 			String pathString = rl.getPath();
-			ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), pathString);
+			Identifier registryName = Identifier.fromNamespaceAndPath(rl.getNamespace(), pathString);
 			
 			if (!BuiltInRegistries.ENTITY_TYPE.containsKey(registryName)) {
                 EpicFight.LOGGER.warn("Mob Patch Exception: No Entity named {}", registryName);
@@ -318,8 +318,8 @@ public class MobPatchReloadListener extends SimpleJsonResourceReloadListener {
 			boolean humanoid = tag.getBoolean("isHumanoid");
 			CustomMobPatchProvider provider = humanoid ? new CustomHumanoidMobPatchProvider() : new CustomMobPatchProvider();
 			provider.attributeValues = deserializeAttributes(tag.getCompound("attributes"));
-			ResourceLocation modelLocation = ResourceLocation.parse(tag.getString("model"));
-			ResourceLocation armatureId = ResourceLocation.parse(tag.getString("armature"));
+			Identifier modelLocation = Identifier.parse(tag.getString("model"));
+			Identifier armatureId = Identifier.parse(tag.getString("armature"));
 			
 			if (EpicFightSharedConstants.isPhysicalClient()) {
                 if (extraEntryProvider == null) Meshes.getOrCreate(modelLocation, (jsonAssetLoader) -> jsonAssetLoader.loadSkinnedMesh(humanoid ? SkinnedMesh::new : HumanoidMesh::new)); // Register mesh when it's not loaded from datapack
@@ -333,7 +333,7 @@ public class MobPatchReloadListener extends SimpleJsonResourceReloadListener {
 			provider.scale = tag.getCompound("attributes").contains("scale") ? (float)tag.getCompound("attributes").getDouble("scale") : 1.0F;
 
             if (tag.contains("swing_sound")) {
-                SoundEvent soundEvent = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(tag.getString("swing_sound")));
+                SoundEvent soundEvent = BuiltInRegistries.SOUND_EVENT.get(Identifier.parse(tag.getString("swing_sound")));
 
                 if (soundEvent == null) {
                     EpicFight.LOGGER.warn("Can't find a swing sound {} for the next mot patch: {}", tag.getString("swing_sound"), entityType.toString());
@@ -343,7 +343,7 @@ public class MobPatchReloadListener extends SimpleJsonResourceReloadListener {
             }
 
             if (tag.contains("hit_sound")) {
-                SoundEvent soundEvent = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(tag.getString("hit_sound")));
+                SoundEvent soundEvent = BuiltInRegistries.SOUND_EVENT.get(Identifier.parse(tag.getString("hit_sound")));
 
                 if (soundEvent == null) {
                     EpicFight.LOGGER.warn("Can't find a hit sound {} for the next mot patch: {}", tag.getString("hit_sound"), entityType.toString());
@@ -353,7 +353,7 @@ public class MobPatchReloadListener extends SimpleJsonResourceReloadListener {
             }
 
             if (tag.contains("hit_particle")) {
-                HitParticleType hitParticle = (HitParticleType)BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.parse(tag.getString("hit_particle")));
+                HitParticleType hitParticle = (HitParticleType)BuiltInRegistries.PARTICLE_TYPE.get(Identifier.parse(tag.getString("hit_particle")));
 
                 if (hitParticle == null) {
                     EpicFight.LOGGER.warn("Can't find a hit particle type {} for the next mot patch: {}", tag.getString("hit_particle"), entityType.toString());
@@ -519,10 +519,10 @@ public class MobPatchReloadListener extends SimpleJsonResourceReloadListener {
 	}
 	
 	public static <T extends MobPatch<?>> Condition<T> deserializeBehaviorPredicate(String type, CompoundTag args) {
-		ResourceLocation rl;
+		Identifier rl;
 		
 		if (type.contains(":")) {
-			rl = ResourceLocation.parse(type);
+			rl = Identifier.parse(type);
 		} else {
 			rl = EpicFight.identifier(type);
 		}
@@ -587,7 +587,7 @@ public class MobPatchReloadListener extends SimpleJsonResourceReloadListener {
 				disabled = tag.getBoolean("disabled");
 			}
 			
-			EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(tag.getString("id")));
+			EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(Identifier.parse(tag.getString("id")));
 			MOB_PATCH_PROVIDERS.put(entityType, deserialize(entityType, tag, true, Minecraft.getInstance().getResourceManager()));
 			EpicFightCapabilities.ENTITY_PATCH_PROVIDER.putCustomEntityPatch(entityType, (entity) -> MOB_PATCH_PROVIDERS.get(entity.getType()).get(entity));
 			
@@ -595,7 +595,7 @@ public class MobPatchReloadListener extends SimpleJsonResourceReloadListener {
 				if (tag.contains("preset")) {
 					Armatures.registerEntityTypeArmatureByPreset(entityType, tag.getString("preset"));
 				} else {
-					ResourceLocation armatureLocation = ResourceLocation.parse(tag.getString("armature"));
+					Identifier armatureLocation = Identifier.parse(tag.getString("armature"));
 					boolean humanoid = tag.getBoolean("isHumanoid");
 					AssetAccessor<? extends Armature> armature = Armatures.getOrCreate(armatureLocation, humanoid ? Armature::new : HumanoidArmature::new);
 					Armatures.registerEntityTypeArmature(entityType, armature);

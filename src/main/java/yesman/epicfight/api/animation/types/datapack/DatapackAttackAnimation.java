@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import yesman.epicfight.api.animation.AnimationClip;
 import yesman.epicfight.api.animation.AnimationPlayer;
@@ -83,19 +83,19 @@ public class DatapackAttackAnimation extends AttackAnimation implements Datapack
 	
 	protected AnimationClip clip;
 	protected EditorAnimation fakeAnimation;
-	protected ResourceLocation registryName;
+	protected Identifier registryName;
 	
 	public DatapackAttackAnimation(float convertTime, String path, AssetAccessor<? extends Armature> armature, ListTag phases) {
 		super(convertTime, path, armature, convertListTagToPhases(phases, armature.get()));
 		
-		((DatapackAnimation<DatapackAttackAnimation>)this).setRegistryName(ResourceLocation.parse(path));
+		((DatapackAnimation<DatapackAttackAnimation>)this).setRegistryName(Identifier.parse(path));
 		this.accessor = this;
 	}
 	
 	public DatapackAttackAnimation(float convertTime, String path, AssetAccessor<? extends Armature> armature, Phase... phases) {
 		super(convertTime, path, armature, phases);
 		
-		((DatapackAnimation<DatapackAttackAnimation>)this).setRegistryName(ResourceLocation.parse(path));
+		((DatapackAnimation<DatapackAttackAnimation>)this).setRegistryName(Identifier.parse(path));
 		this.accessor = this;
 	}
 	
@@ -184,12 +184,12 @@ public class DatapackAttackAnimation extends AttackAnimation implements Datapack
 	}
 	
 	@Override
-	public void setRegistryName(ResourceLocation registryName) {
+	public void setRegistryName(Identifier registryName) {
 		this.registryName = registryName;
 	}
 	
 	@Override
-	public ResourceLocation registryName() {
+	public Identifier registryName() {
 		return this.registryName;
 	}
 

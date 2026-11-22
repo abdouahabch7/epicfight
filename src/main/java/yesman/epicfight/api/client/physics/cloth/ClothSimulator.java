@@ -30,7 +30,7 @@ import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -58,9 +58,9 @@ import yesman.epicfight.main.EpicFightSharedConstants;
  * 
  * https://www.youtube.com/@TenMinutePhysics
  **/
-public class ClothSimulator extends AbstractSimulator<ResourceLocation, ClothObjectBuilder, SoftBodyTranslatable, ClothSimulatable, ClothSimulator.ClothObject> {
-    public static final ResourceLocation PLAYER_CLOAK = EpicFightMod.identifier("ingame_cloak");
-    public static final ResourceLocation MODELPREVIEWER_CLOAK = EpicFightMod.identifier("previewer_cloak");
+public class ClothSimulator extends AbstractSimulator<Identifier, ClothObjectBuilder, SoftBodyTranslatable, ClothSimulatable, ClothSimulator.ClothObject> {
+    public static final Identifier PLAYER_CLOAK = EpicFightMod.identifier("ingame_cloak");
+    public static final Identifier MODELPREVIEWER_CLOAK = EpicFightMod.identifier("previewer_cloak");
 	private static final float SPATIAL_HASH_SPACING = 0.05F;
 	
 	public static class ClothObjectBuilder extends SimulationObject.SimulationObjectBuilder {

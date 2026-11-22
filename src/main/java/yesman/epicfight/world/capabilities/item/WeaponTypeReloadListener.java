@@ -15,7 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.sounds.SoundEvent;
@@ -49,7 +49,7 @@ import java.util.stream.Stream;
 
 public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
     public static void registerDefaultWeaponTypes() {
-        Map<ResourceLocation, Function<Item, ? extends CapabilityItem.Builder<?>>> typeEntry = Maps.newHashMap();
+        Map<Identifier, Function<Item, ? extends CapabilityItem.Builder<?>>> typeEntry = Maps.newHashMap();
 
         WeaponCapabilityPresetRegistryEvent weaponCapabilityPresetRegistryEvent = new WeaponCapabilityPresetRegistryEvent(typeEntry);
         EpicFightEventHooks.Registry.WEAPON_CAPABILITY_PRESET.post(weaponCapabilityPresetRegistryEvent);
@@ -60,15 +60,15 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
     public static final String DIRECTORY = "capabilities/weapons/types";
 
     private static final Gson GSON = (new GsonBuilder()).create();
-    private static final Map<ResourceLocation, Function<Item, ? extends CapabilityItem.Builder<?>>> PRESETS = Maps.newHashMap();
-    private static final Map<ResourceLocation, CompoundTag> CAPABILITY_COMPOUNDS = Maps.newHashMap();
+    private static final Map<Identifier, Function<Item, ? extends CapabilityItem.Builder<?>>> PRESETS = Maps.newHashMap();
+    private static final Map<Identifier, CompoundTag> CAPABILITY_COMPOUNDS = Maps.newHashMap();
 
     public WeaponTypeReloadListener() {
         super(GSON, DIRECTORY);
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> packEntry, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+    protected void apply(Map<Identifier, JsonElement> packEntry, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         clear();
         packEntry.forEach((key, value) -> {
             CompoundTag compTag = null;
@@ -91,7 +91,7 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
     }
 
     public static Function<Item, ? extends CapabilityItem.Builder<?>> getOrThrow(String typeName) {
-        ResourceLocation rl = ResourceLocation.parse(typeName);
+        Identifier rl = Identifier.parse(typeName);
 
         if (!PRESETS.containsKey(rl)) {
             throw new IllegalArgumentException("Can't find weapon type: " + rl);
@@ -101,26 +101,26 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
     }
 
     public static Function<Item, ? extends CapabilityItem.Builder<?>> get(String typeName) {
-        return get(ResourceLocation.parse(typeName));
+        return get(Identifier.parse(typeName));
     }
 
-    public static Function<Item, ? extends CapabilityItem.Builder<?>> get(ResourceLocation typeName) {
+    public static Function<Item, ? extends CapabilityItem.Builder<?>> get(Identifier typeName) {
         return PRESETS.get(typeName);
     }
 
-    public static <T extends CapabilityItem.Builder<?>> void register(ResourceLocation rl, T builder) {
+    public static <T extends CapabilityItem.Builder<?>> void register(Identifier rl, T builder) {
         PRESETS.put(rl, (item) -> builder);
     }
 
-    public static WeaponCapability.Builder deserializeWeaponCapabilityBuilder(ResourceLocation rl, CompoundTag tag) {
+    public static WeaponCapability.Builder deserializeWeaponCapabilityBuilder(Identifier rl, CompoundTag tag) {
         return deserializeWeaponCapabilityBuilder(rl, tag, null);
     }
 
-    /// @deprecated Use Non-datapack sensitive version. [#deserializeWeaponCapabilityBuilder(ResourceLocation, CompoundTag)]
+    /// @deprecated Use Non-datapack sensitive version. [#deserializeWeaponCapabilityBuilder(Identifier, CompoundTag)]
     /// @param extraEntryProvider Returns extra-entry created in runtime. (Datapack editor) Exists to access animations
     @Deprecated
     @SuppressWarnings("unchecked")
-    public static WeaponCapability.Builder deserializeWeaponCapabilityBuilder(ResourceLocation rl, CompoundTag tag, @Nullable ExtraEntryProvider extraEntryProvider) {
+    public static WeaponCapability.Builder deserializeWeaponCapabilityBuilder(Identifier rl, CompoundTag tag, @Nullable ExtraEntryProvider extraEntryProvider) {
         WeaponCapability.Builder builder = WeaponCapability.builder();
 
         if (!tag.contains("category") || StringUtil.isNullOrEmpty(tag.getString("category"))) {
@@ -132,7 +132,7 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
         builder.canBePlacedOffhand(!tag.contains("usable_in_offhand") || tag.getBoolean("usable_in_offhand"));
 
         if (tag.contains("hit_particle")) {
-            Optional<Holder.Reference<ParticleType<?>>> particleType = BuiltInRegistries.PARTICLE_TYPE.getHolder(ResourceLocation.parse(tag.getString("hit_particle")));
+            Optional<Holder.Reference<ParticleType<?>>> particleType = BuiltInRegistries.PARTICLE_TYPE.getHolder(Identifier.parse(tag.getString("hit_particle")));
             particleType.ifPresent( particleHolder -> {
                 if (!(particleHolder.value() instanceof HitParticleType)) {
                     EpicFight.LOGGER.warn("{} is not a hit particle type in {}", tag.getString("hit_particle"), rl);
@@ -144,13 +144,13 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
         }
 
         if (tag.contains("swing_sound")) {
-            Holder<SoundEvent> sound = BuiltInRegistries.SOUND_EVENT.getHolder(ResourceLocation.parse(tag.getString("swing_sound"))).get();
+            Holder<SoundEvent> sound = BuiltInRegistries.SOUND_EVENT.getHolder(Identifier.parse(tag.getString("swing_sound"))).get();
 
             builder.swingSound(sound);
         }
 
         if (tag.contains("hit_sound")) {
-            Holder<SoundEvent> sound = BuiltInRegistries.SOUND_EVENT.getHolder(ResourceLocation.parse(tag.getString("hit_sound"))).get();
+            Holder<SoundEvent> sound = BuiltInRegistries.SOUND_EVENT.getHolder(Identifier.parse(tag.getString("hit_sound"))).get();
 
             builder.hitSound(sound);
         }
@@ -180,7 +180,7 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
 
         for (String key : innateSkillsTag.getAllKeys()) {
             Style style = Style.ENUM_MANAGER.getOrThrow(key);
-            Skill skill = EpicFightRegistries.SKILL.get(ResourceLocation.parse(innateSkillsTag.getString(key)));
+            Skill skill = EpicFightRegistries.SKILL.get(Identifier.parse(innateSkillsTag.getString(key)));
 
             builder.innateSkill(style, itemstack -> skill);
         }
@@ -215,7 +215,7 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
 
             for (Tag offhandTag : caseCompTag.getList("conditions", Tag.TAG_COMPOUND)) {
                 CompoundTag offhandCompound = (CompoundTag)offhandTag;
-                Supplier<EntityPatchCondition> conditionProvider = EpicFightConditions.getConditionOrThrow(ResourceLocation.parse(offhandCompound.getString("predicate")));
+                Supplier<EntityPatchCondition> conditionProvider = EpicFightConditions.getConditionOrThrow(Identifier.parse(offhandCompound.getString("predicate")));
                 EntityPatchCondition condition = conditionProvider.get();
                 condition.read(offhandCompound);
                 conditionList.add(condition);
@@ -248,7 +248,7 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
 
             for (Tag offhandTag : offhandValidatorList) {
                 CompoundTag offhandCompound = (CompoundTag)offhandTag;
-                Supplier<EntityPatchCondition> conditionProvider = EpicFightConditions.getConditionOrThrow(ResourceLocation.parse(offhandCompound.getString("predicate")));
+                Supplier<EntityPatchCondition> conditionProvider = EpicFightConditions.getConditionOrThrow(Identifier.parse(offhandCompound.getString("predicate")));
                 EntityPatchCondition condition = conditionProvider.get();
                 condition.read(offhandCompound);
                 conditionList.add(condition);
@@ -267,7 +267,7 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
 
         if (tag.contains("custom_tags")) {
             for (Tag customTag : tag.getList("custom_tags", Tag.TAG_STRING)) {
-                builder.addTag(ResourceLocation.parse(customTag.getAsString()));
+                builder.addTag(Identifier.parse(customTag.getAsString()));
             }
         }
 
@@ -285,7 +285,7 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
         return tagStream;
     }
 
-    public static Set<Map.Entry<ResourceLocation, Function<Item, ? extends CapabilityItem.Builder<?>>>> entries() {
+    public static Set<Map.Entry<Identifier, Function<Item, ? extends CapabilityItem.Builder<?>>>> entries() {
         return PRESETS.entrySet();
     }
 
@@ -301,7 +301,7 @@ public class WeaponTypeReloadListener extends SimpleJsonResourceReloadListener {
             registerDefaultWeaponTypes();
 
             for (CompoundTag tag : packet.tags()) {
-                ResourceLocation rl = ResourceLocation.parse(tag.getString("registry_name"));
+                Identifier rl = Identifier.parse(tag.getString("registry_name"));
 
                 try
                 {

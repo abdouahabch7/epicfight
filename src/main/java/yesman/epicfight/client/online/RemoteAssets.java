@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.client.model.Mesh;
 import yesman.epicfight.client.online.texture.RemoteTexture;
@@ -62,8 +62,8 @@ public class RemoteAssets {
 		return this.cachedMeshes.get(seq);
 	}
 	
-	public synchronized ResourceLocation getRemoteTexture(String fileName) {
-		ResourceLocation textureLocation = ResourceLocation.fromNamespaceAndPath(EpicFightMod.EPICSKINS_MODID, "textures/remote/" + fileName);
+	public synchronized Identifier getRemoteTexture(String fileName) {
+		Identifier textureLocation = Identifier.fromNamespaceAndPath(EpicFightMod.EPICSKINS_MODID, "textures/remote/" + fileName);
 		AbstractTexture texture = TEXTURE_MANAGER.getTexture(textureLocation, MissingTextureAtlasSprite.getTexture());
 		
 		if (texture == MissingTextureAtlasSprite.getTexture()) {
@@ -98,7 +98,7 @@ public class RemoteAssets {
 		}
 		
 		@Override
-		public ResourceLocation registryName() {
+		public Identifier registryName() {
 			return null;
 		}
 		

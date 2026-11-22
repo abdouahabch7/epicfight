@@ -8,7 +8,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -31,11 +31,11 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class SkillEditScreen extends Screen {
-    public static final ResourceLocation EMPTY_SKILL_SLOT_ICON = EpicFightMod.identifier("textures/gui/empty.png");
-    public static final ResourceLocation SCROLL_ARROW_UP = EpicFightMod.identifier("textures/gui/scroll_arrow_up.png");
-    public static final ResourceLocation SCROLL_ARROW_DOWN = EpicFightMod.identifier("textures/gui/scroll_arrow_down.png");
+    public static final Identifier EMPTY_SKILL_SLOT_ICON = EpicFightMod.identifier("textures/gui/empty.png");
+    public static final Identifier SCROLL_ARROW_UP = EpicFightMod.identifier("textures/gui/scroll_arrow_up.png");
+    public static final Identifier SCROLL_ARROW_DOWN = EpicFightMod.identifier("textures/gui/scroll_arrow_down.png");
 
-    private static final ResourceLocation SKILL_EDIT_UI = EpicFightMod.identifier("textures/gui/screen/skill_edit.png");
+    private static final Identifier SKILL_EDIT_UI = EpicFightMod.identifier("textures/gui/screen/skill_edit.png");
     private static final MutableComponent NO_SKILLS = Component.translatable(LangKeys.GUI_MESSAGE_SKILL_EDIT_NO_SKILLS);
 
     private static final int MAX_SKILL_OPTIONS_ROWS = 6;

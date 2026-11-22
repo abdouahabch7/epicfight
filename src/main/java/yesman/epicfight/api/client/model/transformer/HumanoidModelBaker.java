@@ -21,7 +21,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,7 +32,7 @@ import yesman.epicfight.client.mesh.HumanoidMesh;
 import yesman.epicfight.main.EpicFightMod;
 
 public class HumanoidModelBaker {
-	static final Map<ResourceLocation, SkinnedMesh> BAKED_MODELS = new HashMap<> ();
+	static final Map<Identifier, SkinnedMesh> BAKED_MODELS = new HashMap<> ();
 	static final List<HumanoidModelTransformer> MODEL_TRANSFORMERS = new ArrayList<> ();
 	
 	static final Set<ArmorItem> EXCEPTIONAL_MODELS = new HashSet<> ();
@@ -52,7 +52,7 @@ public class HumanoidModelBaker {
 		File zipFile = new File(resourcePackDirectory, "epicfight_custom_armors.zip");
 		ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));
 		
-		for (Map.Entry<ResourceLocation, SkinnedMesh> entry : BAKED_MODELS.entrySet()) {
+		for (Map.Entry<Identifier, SkinnedMesh> entry : BAKED_MODELS.entrySet()) {
 			ZipEntry zipEntry = new ZipEntry(String.format("assets/%s/animmodels/armor/%s.json", entry.getKey().getNamespace(), entry.getKey().getPath()));
 			Gson gson = new GsonBuilder().create();
 			out.putNextEntry(zipEntry);

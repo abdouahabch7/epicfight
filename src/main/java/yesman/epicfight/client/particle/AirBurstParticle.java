@@ -5,16 +5,16 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.client.model.ClassicMesh;
 import yesman.epicfight.api.client.model.Meshes;
 import yesman.epicfight.main.EpicFightMod;
 
 public class AirBurstParticle extends TexturedCustomModelParticle {
-    public static final ResourceLocation AIR_BURST_PARTICLE = EpicFightMod.identifier("textures/particle/air_burst.png");
+    public static final Identifier AIR_BURST_PARTICLE = EpicFightMod.identifier("textures/particle/air_burst.png");
 	
-	public AirBurstParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, AssetAccessor<ClassicMesh> particleMesh, ResourceLocation texture) {
+	public AirBurstParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, AssetAccessor<ClassicMesh> particleMesh, Identifier texture) {
 		super(level, x, y, z, xd, yd, zd, particleMesh, texture);
 		
 		this.scale = 0.1F;

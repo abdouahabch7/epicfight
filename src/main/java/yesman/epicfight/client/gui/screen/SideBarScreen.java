@@ -13,7 +13,7 @@ import net.minecraft.client.gui.navigation.CommonInputs;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -109,8 +109,8 @@ public class SideBarScreen extends Screen {
     }
 
     private class CloseButton extends AbstractButton implements AnchoredWidget {
-        private static final ResourceLocation ARROW_SPRITE = EpicFightMod.identifier("widget/arrow");
-        private static final ResourceLocation ARROW_HIGHLIGHTED_SPRITE = EpicFightMod.identifier("widget/arrow_highlighted");
+        private static final Identifier ARROW_SPRITE = EpicFightMod.identifier("widget/arrow");
+        private static final Identifier ARROW_HIGHLIGHTED_SPRITE = EpicFightMod.identifier("widget/arrow_highlighted");
 
         private CloseButton(int sideBarWidth) {
             super(0, 0, 0, 0, Component.empty());
@@ -133,7 +133,7 @@ public class SideBarScreen extends Screen {
             guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.getWidth() + 1, this.getY() + this.getHeight(), 0xFFABABAB);
             guiGraphics.fill(this.getX(), this.getY() + 1, this.getX() + this.getWidth(), this.getY() + this.getHeight() - 1, 0xFF000000);
 
-            ResourceLocation resourcelocation = this.isHoveredOrFocused() ? ARROW_HIGHLIGHTED_SPRITE : ARROW_SPRITE;
+            Identifier resourcelocation = this.isHoveredOrFocused() ? ARROW_HIGHLIGHTED_SPRITE : ARROW_SPRITE;
 
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(this.getX() + this.getWidth() / 2.0F - 3 + 4, this.getY() + this.getHeight() / 2.0F + 3, 1.0F);

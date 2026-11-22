@@ -16,7 +16,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.EntityType;
@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 /// We're refactoring UI codes, use [yesman.epicfight.client.gui.widgets.PopupBox] instead
 @Deprecated
 public abstract class PopupBox<T> extends AbstractWidget implements DataBindingComponent<T, Pair<String, T>> {
-    public static final ResourceLocation POPUP_ICON = EpicFightMod.identifier("textures/gui/widget/popup_icon.png");
+    public static final Identifier POPUP_ICON = EpicFightMod.identifier("textures/gui/widget/popup_icon.png");
 	
 	protected final Screen owner;
 	protected final Font font;
@@ -220,7 +220,7 @@ public abstract class PopupBox<T> extends AbstractWidget implements DataBindingC
 	public static class WeaponTypePopupBox extends PopupBox<Function<Item, CapabilityItem.Builder<?>>> {
 		public WeaponTypePopupBox(Screen owner, Font font, int x1, int x2, int y1, int y2, HorizontalSizing horizontal, VerticalSizing vertical, Component title, Consumer<Pair<String, Function<Item, CapabilityItem.Builder<?>>>> responder) {
 			super(owner, font, x1, x2, y1, y2, horizontal, vertical, title, (builder) -> {
-				Map<Function<Item, ? extends CapabilityItem.Builder<?>>, ResourceLocation> map = new HashMap<> ();
+				Map<Function<Item, ? extends CapabilityItem.Builder<?>>, Identifier> map = new HashMap<> ();
 				
 				WeaponTypeReloadListener.entries().forEach((entry) -> map.put(entry.getValue(), entry.getKey()));
 				DatapackEditScreen.getSerializableWeaponTypes().forEach((entry) -> map.put(entry.getValue(), entry.getKey()));
@@ -232,11 +232,11 @@ public abstract class PopupBox<T> extends AbstractWidget implements DataBindingC
 		@Override
 		public void onClick(double x, double y) {
 			if (this.clickedPopupButton(x, y)) {
-				Set<Map.Entry<ResourceLocation, Function<Item, ? extends CapabilityItem.Builder<?>>>> weaponTypeEntry = Sets.newHashSet();
+				Set<Map.Entry<Identifier, Function<Item, ? extends CapabilityItem.Builder<?>>>> weaponTypeEntry = Sets.newHashSet();
 				weaponTypeEntry.addAll(WeaponTypeReloadListener.entries());
 				weaponTypeEntry.addAll(DatapackEditScreen.getSerializableWeaponTypes());
 				
-				Set<Pair<ResourceLocation, Function<Item, CapabilityItem.Builder<?>>>> castedPairs =
+				Set<Pair<Identifier, Function<Item, CapabilityItem.Builder<?>>>> castedPairs =
 					ParseUtil.mapEntryToPair(weaponTypeEntry).stream()
 						.map(pair -> {
 							@SuppressWarnings("unchecked")
@@ -298,7 +298,7 @@ public abstract class PopupBox<T> extends AbstractWidget implements DataBindingC
 		@Override
 		public void onClick(double x, double y) {
 			if (this.clickedPopupButton(x, y)) {
-				Set<Pair<ResourceLocation, EntityType<?>>> set = Sets.newHashSet();
+				Set<Pair<Identifier, EntityType<?>>> set = Sets.newHashSet();
 				EpicFightCapabilities.ENTITY_PATCH_PROVIDER.getPatchedEntities().forEach(entityType -> set.add(Pair.of(EntityType.getKey(entityType), entityType)));
 				this.owner.getMinecraft().setScreen(new SelectFromRegistryScreen<>(this.owner, set, "Preset", (name, item) -> this._setValue(item), (name, item) -> this._setValue(item), (c) -> {}, this.getFilter()));
 			}
@@ -333,7 +333,7 @@ public abstract class PopupBox<T> extends AbstractWidget implements DataBindingC
 		@Override
 		public void onClick(double x, double y) {
 			if (this.clickedPopupButton(x, y)) {
-				Set<Pair<ResourceLocation, AssetAccessor<Armature>>> entries = Armatures.entry();
+				Set<Pair<Identifier, AssetAccessor<Armature>>> entries = Armatures.entry();
 				DatapackEditScreen.getCurrentScreen().getUserArmatures().entrySet().forEach((entry) -> entries.add(Pair.of(entry.getKey(), (AssetAccessor<Armature>)entry.getValue())));
 				
 				this.owner.getMinecraft().setScreen(new SelectFromRegistryScreen<> (this.owner, entries, "Armature", (name, item) -> {
@@ -347,15 +347,15 @@ public abstract class PopupBox<T> extends AbstractWidget implements DataBindingC
 		}
 	}
 	
-	public static class RendererPopupBox extends PopupBox<ResourceLocation> {
-		public RendererPopupBox(Screen owner, Font font, int x1, int x2, int y1, int y2, HorizontalSizing horizontal, VerticalSizing vertical, Component title, Consumer<Pair<String, ResourceLocation>> responder) {
+	public static class RendererPopupBox extends PopupBox<Identifier> {
+		public RendererPopupBox(Screen owner, Font font, int x1, int x2, int y1, int y2, HorizontalSizing horizontal, VerticalSizing vertical, Component title, Consumer<Pair<String, Identifier>> responder) {
 			super(owner, font, x1, x2, y1, y2, horizontal, vertical, title, (entityType) -> ParseUtil.nullOrToString(entityType, (rl) -> rl.toString()), responder);
 		}
 		
 		@Override
 		public void onClick(double x, double y) {
 			if (this.clickedPopupButton(x, y)) {
-				Set<Pair<ResourceLocation, ResourceLocation>> set = Sets.newHashSet();
+				Set<Pair<Identifier, Identifier>> set = Sets.newHashSet();
 				RenderEngine.getInstance().getRendererEntries().forEach((rl) -> set.add(Pair.of(rl, rl)));
 				
 				this.owner.getMinecraft().setScreen(new SelectFromRegistryScreen<>(this.owner, set, "Renderer", (name, item) -> this._setValue(item), (name, item) -> this._setValue(item), (c) -> {}, this.getFilter()));

@@ -1,6 +1,6 @@
 package yesman.epicfight.api.animation.types;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -27,8 +27,8 @@ public class MirrorAnimation extends StaticAnimation {
 	public MirrorAnimation(float transitionTime, boolean repeatPlay, AnimationAccessor<? extends MirrorAnimation> accessor, String mainhandPath, String offhandPath, AssetAccessor<? extends Armature> armature) {
 		super(transitionTime, false, accessor, armature);
 
-		ResourceLocation mainhand = ResourceLocation.fromNamespaceAndPath(accessor.registryName().getNamespace(), mainhandPath);
-		ResourceLocation offhand = ResourceLocation.fromNamespaceAndPath(accessor.registryName().getNamespace(), offhandPath);
+		Identifier mainhand = Identifier.fromNamespaceAndPath(accessor.registryName().getNamespace(), mainhandPath);
+		Identifier offhand = Identifier.fromNamespaceAndPath(accessor.registryName().getNamespace(), offhandPath);
 		this.original = new DirectStaticAnimation(transitionTime, repeatPlay, mainhand, armature);
 		this.mirror = new DirectStaticAnimation(transitionTime, repeatPlay, offhand, armature);
 	}

@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import yesman.epicfight.api.animation.AnimationClip;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.AnimationPlayer;
@@ -36,7 +36,7 @@ public class EditorAnimation extends StaticAnimation implements AnimationAccesso
 	private JsonObject properties = new JsonObject();
 	
 	public EditorAnimation(String path, AssetAccessor<? extends Armature> armature, AnimationClip clip, JsonAssetLoader.TransformFormat transformFormat, JsonArray rawAnimation) {
-		super(ResourceLocation.withDefaultNamespace(""), 0.0F, false, "", armature);
+		super(Identifier.withDefaultNamespace(""), 0.0F, false, "", armature);
 		
 		this.animationClip = clip;
         this.transformFormat = transformFormat;
@@ -98,8 +98,8 @@ public class EditorAnimation extends StaticAnimation implements AnimationAccesso
 	}
 	
 	@Override
-	public ResourceLocation getRegistryName() {
-		return ResourceLocation.parse((String)this.constructorParams.get("path"));
+	public Identifier getRegistryName() {
+		return Identifier.parse((String)this.constructorParams.get("path"));
 	}
 	
 	@Override
@@ -326,7 +326,7 @@ public class EditorAnimation extends StaticAnimation implements AnimationAccesso
 	}
 
 	@Override
-	public ResourceLocation registryName() {
+	public Identifier registryName() {
 		return this.getRegistryName();
 	}
 

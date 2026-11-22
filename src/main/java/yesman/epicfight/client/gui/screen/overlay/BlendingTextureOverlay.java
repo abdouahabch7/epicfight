@@ -11,13 +11,13 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class BlendingTextureOverlay extends OverlayManager.Overlay {
-	public ResourceLocation texture;
+	public Identifier texture;
 	private boolean isAlive = true;
 	
-	public BlendingTextureOverlay(ResourceLocation texture) {
+	public BlendingTextureOverlay(Identifier texture) {
 		this.texture = texture;
 	}
 	

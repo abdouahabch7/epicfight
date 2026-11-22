@@ -2,7 +2,7 @@ package yesman.epicfight.api.ex_cap.managers;
 
 import com.google.common.collect.Maps;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 import yesman.epicfight.api.ex_cap.data.modifier.WeaponModifier;
 import yesman.epicfight.registry.EpicFightRegistries;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 @ApiStatus.Experimental
 public class ModifierManager {
-    private static final Map<ResourceLocation, WeaponModifier> BUILDERS = Maps.newHashMap();
+    private static final Map<Identifier, WeaponModifier> BUILDERS = Maps.newHashMap();
 
     public static void acceptEvent()
     {
@@ -21,7 +21,7 @@ public class ModifierManager {
     }
 
 
-    public static void add(ResourceLocation rl, CompoundTag tag)
+    public static void add(Identifier rl, CompoundTag tag)
     {
         //TODO: Implement
     }

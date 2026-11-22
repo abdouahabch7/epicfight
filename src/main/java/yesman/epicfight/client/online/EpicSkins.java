@@ -8,7 +8,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import net.minecraft.client.resources.PlayerSkin;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.Items;
@@ -30,7 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public record EpicSkins(Supplier<ResourceLocation> capeTexture, float r, float g, float b) {
+public record EpicSkins(Supplier<Identifier> capeTexture, float r, float g, float b) {
 	public static void initEpicSkins(AbstractClientPlayerPatch<?> playerpatch) {
 		if (EpicFightServerConnectionHelper.supported() && ClientConfig.enableCosmetics) {
 			EpicFightServerConnectionHelper.getPlayerSkinInfo(EpicFightSharedConstants.webServerDomain(), playerpatch.getOriginal().getUUID().toString().replace("-", ""), (response, exception) -> {
@@ -63,7 +63,7 @@ public record EpicSkins(Supplier<ResourceLocation> capeTexture, float r, float g
 				
 				if (cosmetics.containsKey(Slot.CAPE)) {
 					Cape cosmetic = cosmetics.get(Slot.CAPE);
-					Supplier<ResourceLocation> cloakTextureProvider = null;
+					Supplier<Identifier> cloakTextureProvider = null;
 					
 					if (cosmetic.useBoolParam1() && cosmetic.boolParam1()) {
 						cloakTextureProvider = () -> playerpatch.getOriginal().getSkin().capeTexture();
@@ -71,7 +71,7 @@ public record EpicSkins(Supplier<ResourceLocation> capeTexture, float r, float g
 						cloakTextureProvider = () -> cosmetic.textureLocation();
 					}
 					
-					final Supplier<ResourceLocation> fCloakTextureProvider = cloakTextureProvider;
+					final Supplier<Identifier> fCloakTextureProvider = cloakTextureProvider;
 					
 					RemoteAssets.getInstance().getRemoteMesh(cosmetic.seq(), cosmetic.fileLocation(), (mesh) -> {
 						SoftBodyTranslatable.TRACKING_SIMULATION_SUBJECTS.add(playerpatch);

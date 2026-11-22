@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.client.event.EpicFightClientEventHooks;
@@ -29,7 +29,7 @@ public class PCustomEntityRenderer extends PatchedEntityRenderer<LivingEntity, L
 		
 		Minecraft mc = Minecraft.getInstance();
 		boolean isGlowing = mc.shouldEntityAppearGlowing(entity);
-		ResourceLocation textureLocation = renderer.getTextureLocation(entity);
+		Identifier textureLocation = renderer.getTextureLocation(entity);
 		RenderType renderType = isGlowing ? RenderType.outline(textureLocation) : RenderType.entityCutoutNoCull(textureLocation);
 		Armature armature = entitypatch.getArmature();
 		poseStack.pushPose();

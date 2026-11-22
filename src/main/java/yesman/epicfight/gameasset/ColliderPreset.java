@@ -11,7 +11,7 @@ import com.google.common.collect.HashBiMap;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -22,9 +22,9 @@ import yesman.epicfight.api.collider.MultiOBBCollider;
 import yesman.epicfight.api.collider.OBBCollider;
 
 public class ColliderPreset implements PreparableReloadListener {
-	private static final BiMap<ResourceLocation, Collider> PRESETS = HashBiMap.create();
+	private static final BiMap<Identifier, Collider> PRESETS = HashBiMap.create();
 	
-	public static Collider registerCollider(ResourceLocation rl, Collider collider) {
+	public static Collider registerCollider(Identifier rl, Collider collider) {
 		if (PRESETS.containsKey(rl)) {
 			throw new IllegalStateException("Collider named " + rl + " already registered.");
 		}
@@ -34,15 +34,15 @@ public class ColliderPreset implements PreparableReloadListener {
 		return collider;
 	}
 	
-	public static Set<Map.Entry<ResourceLocation, Collider>> entries() {
+	public static Set<Map.Entry<Identifier, Collider>> entries() {
 		return Collections.unmodifiableSet(PRESETS.entrySet());
 	}
 	
-	public static ResourceLocation getKey(Collider collider) {
+	public static Identifier getKey(Collider collider) {
 		return PRESETS.inverse().get(collider);
 	}
 	
-	public static Collider get(ResourceLocation rl) {
+	public static Collider get(Identifier rl) {
 		return PRESETS.get(rl);
 	}
 	

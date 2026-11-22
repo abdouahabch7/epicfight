@@ -15,7 +15,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.types.StaticAnimation;
@@ -53,7 +53,7 @@ public class ImportAnimationsScreen extends Screen {
 	private InputComponentList<EditorAnimation> inputComponentsList;
 	private ComboBox<EditorAnimation.AnimationType> animationType;
 	private Consumer<EditorAnimation.AnimationType> responder;
-	private Map<ResourceLocation, PackEntry<EditorAnimation, DatapackAnimation<? extends StaticAnimation>>> userAnimations;
+	private Map<Identifier, PackEntry<EditorAnimation, DatapackAnimation<? extends StaticAnimation>>> userAnimations;
 	
 	public ImportAnimationsScreen(SelectAnimationScreen parentScreen, AssetAccessor<? extends Armature> armature, AssetAccessor<? extends SkinnedMesh> mesh) {
 		super(Component.literal("register_animation_screen"));
@@ -127,7 +127,7 @@ public class ImportAnimationsScreen extends Screen {
 										}
 									})
 									.addColumn(Grid.editbox("animation_name")
-													.editWidgetCreated((editbox) -> editbox.setFilter(rl -> ResourceLocation.isValidNamespace(rl) && ResourceLocation.isValidPath(rl)))
+													.editWidgetCreated((editbox) -> editbox.setFilter(rl -> Identifier.isValidNamespace(rl) && Identifier.isValidPath(rl)))
 													.editable(true)
 													.valueChanged((event) -> this.fakeAnimations.get(event.rowposition).setParameter("path", event.postValue))
 													.width(180))
@@ -828,7 +828,7 @@ public class ImportAnimationsScreen extends Screen {
 					try {
 						File file = path.toFile();
 						stream = new FileInputStream(file);
-						JsonAssetLoader jsonLoader = new JsonAssetLoader(stream, ResourceLocation.fromNamespaceAndPath(modid, file.getName()));
+						JsonAssetLoader jsonLoader = new JsonAssetLoader(stream, Identifier.fromNamespaceAndPath(modid, file.getName()));
 						String armatureName = this.modelPreviewer.getArmature().get().toString();
 						armatureName = armatureName.substring(armatureName.indexOf(":") + 1);
 						

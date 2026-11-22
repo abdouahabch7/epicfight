@@ -12,7 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
@@ -37,11 +37,11 @@ public record TrailInfo(
 	, int updateInterval
 	, int blockLight
 	, int skyLight
-	, ResourceLocation texturePath
+	, Identifier texturePath
 	, InteractionHand hand
 ) {
-    public static final ResourceLocation GENERIC_TRAIL_TEXTURE = EpicFightMod.identifier("textures/particle/swing_trail.png");
-    public static final ResourceLocation SWORDMASTER_SWING_TRAIL_TEX = EpicFightMod.identifier("textures/particle/swordmaster_trail.png");
+    public static final Identifier GENERIC_TRAIL_TEXTURE = EpicFightMod.identifier("textures/particle/swing_trail.png");
+    public static final Identifier SWORDMASTER_SWING_TRAIL_TEX = EpicFightMod.identifier("textures/particle/swordmaster_trail.png");
 	
 	public static final TrailInfo PREVIEWER_DEFAULT_TRAIL = TrailInfo.builder()
 			.startPos(new Vec3(0.0D, 0.0D, 0.0D))
@@ -192,7 +192,7 @@ public record TrailInfo(
 		
 		if (trailObj.has("particle_type")) {
 			String particleTypeName = GsonHelper.getAsString(trailObj, "particle_type");
-			SimpleParticleType particleType = (SimpleParticleType)BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.parse(particleTypeName));
+			SimpleParticleType particleType = (SimpleParticleType)BuiltInRegistries.PARTICLE_TYPE.get(Identifier.parse(particleTypeName));
 			trailBuilder.type(particleType);
 		}
 		
@@ -272,7 +272,7 @@ public record TrailInfo(
 		if (compoundTag.contains("particle_type")) {
 			String particleTypeName = compoundTag.getString("particle_type");
 			
-			SimpleParticleType particleType = (SimpleParticleType)BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.parse(particleTypeName));
+			SimpleParticleType particleType = (SimpleParticleType)BuiltInRegistries.PARTICLE_TYPE.get(Identifier.parse(particleTypeName));
 			trailBuilder.type(particleType);
 		}
 		
@@ -328,7 +328,7 @@ public record TrailInfo(
 		private int updateInterval = 1;
 		private int blockLight;
 		private int skyLight;
-		private ResourceLocation texturePath;
+		private Identifier texturePath;
 		private InteractionHand hand = InteractionHand.MAIN_HAND;
 		
 		public TrailInfo.Builder startPos(Vec3 start) {
@@ -403,11 +403,11 @@ public record TrailInfo(
 		}
 		
 		public TrailInfo.Builder texture(String texturePath) {
-			this.texturePath = ResourceLocation.parse(texturePath);
+			this.texturePath = Identifier.parse(texturePath);
 			return this;
 		}
 		
-		public TrailInfo.Builder texture(ResourceLocation texturePath) {
+		public TrailInfo.Builder texture(Identifier texturePath) {
 			this.texturePath = texturePath;
 			return this;
 		}
