@@ -141,9 +141,9 @@ public final class EpicFightItems {
 	);
 	
 	// Stray armor
-	public static final DeferredHolder<Item, ArmorItem> STRAY_HAT = REGISTRY.register("stray_hat", () -> new ArmorItem(EpicFightArmorMaterials.STRAY_CLOTH, ArmorItem.Type.HELMET, new Item.Properties()));
-	public static final DeferredHolder<Item, ArmorItem> STRAY_ROBE = REGISTRY.register("stray_robe", () -> new ArmorItem(EpicFightArmorMaterials.STRAY_CLOTH, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-	public static final DeferredHolder<Item, ArmorItem> STRAY_PANTS = REGISTRY.register("stray_pants", () -> new ArmorItem(EpicFightArmorMaterials.STRAY_CLOTH, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+	public static final DeferredHolder<Item, ArmorItem> STRAY_HAT = REGISTRY.register("stray_hat", () -> new ArmorItem(EpicFightArmorMaterials.STRAY_CLOTH, net.minecraft.world.item.equipment.ArmorType.HELMET, new Item.Properties()));
+	public static final DeferredHolder<Item, ArmorItem> STRAY_ROBE = REGISTRY.register("stray_robe", () -> new ArmorItem(EpicFightArmorMaterials.STRAY_CLOTH, net.minecraft.world.item.equipment.ArmorType.CHESTPLATE, new Item.Properties()));
+	public static final DeferredHolder<Item, ArmorItem> STRAY_PANTS = REGISTRY.register("stray_pants", () -> new ArmorItem(EpicFightArmorMaterials.STRAY_CLOTH, net.minecraft.world.item.equipment.ArmorType.LEGGINGS, new Item.Properties()));
 	
 	public static final DeferredHolder<Item, SkillBookItem> SKILLBOOK = REGISTRY.register("skillbook", () -> new SkillBookItem(new Item.Properties().rarity(Rarity.RARE).stacksTo(1)));
 }

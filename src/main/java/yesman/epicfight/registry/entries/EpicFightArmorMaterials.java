@@ -26,13 +26,13 @@ public final class EpicFightArmorMaterials {
 			, () ->
 				new ArmorMaterial(
 					Util.make(
-						new EnumMap<>(ArmorItem.Type.class),
+						new EnumMap<>(net.minecraft.world.item.equipment.ArmorType.class),
 						enumMap -> {
-					        enumMap.put(ArmorItem.Type.BOOTS, 1);
-					        enumMap.put(ArmorItem.Type.LEGGINGS, 2);
-					        enumMap.put(ArmorItem.Type.CHESTPLATE, 3);
-					        enumMap.put(ArmorItem.Type.HELMET, 1);
-					        enumMap.put(ArmorItem.Type.BODY, 2);
+					        enumMap.put(net.minecraft.world.item.equipment.ArmorType.BOOTS, 1);
+					        enumMap.put(net.minecraft.world.item.equipment.ArmorType.LEGGINGS, 2);
+					        enumMap.put(net.minecraft.world.item.equipment.ArmorType.CHESTPLATE, 3);
+					        enumMap.put(net.minecraft.world.item.equipment.ArmorType.HELMET, 1);
+					        enumMap.put(net.minecraft.world.item.equipment.ArmorType.BODY, 2);
 						}
 					)
 					, 15

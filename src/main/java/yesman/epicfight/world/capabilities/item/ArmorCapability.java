@@ -23,7 +23,7 @@ import java.util.List;
 public class ArmorCapability extends CapabilityItem {
 	protected final double weight;
 	protected final double stunArmor;
-	protected final ArmorItem.Type armorType;
+	protected final net.minecraft.world.item.equipment.ArmorType armorType;
 	
 	protected ArmorCapability(ArmorCapability.Builder builder) {
 		super(builder);
@@ -106,7 +106,7 @@ public class ArmorCapability extends CapabilityItem {
 	}
 	
 	public static class Builder extends CapabilityItem.Builder<Builder> {
-		private ArmorItem.Type armorType;
+		private net.minecraft.world.item.equipment.ArmorType armorType;
 		private double weight;
 		private double stunArmor;
 		

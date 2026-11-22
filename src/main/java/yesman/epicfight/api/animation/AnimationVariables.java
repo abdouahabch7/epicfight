@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.ApiStatus;
 
 import com.google.common.collect.HashMultimap;

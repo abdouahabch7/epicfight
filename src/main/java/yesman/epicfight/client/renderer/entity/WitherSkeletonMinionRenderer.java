@@ -3,7 +3,7 @@ package yesman.epicfight.client.renderer.entity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.WitherSkeletonRenderer;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 import yesman.epicfight.main.EpicFightMod;
 
 public class WitherSkeletonMinionRenderer extends WitherSkeletonRenderer {

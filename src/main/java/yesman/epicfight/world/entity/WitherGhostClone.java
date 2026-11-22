@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.FlyingMob;
+
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -15,8 +15,8 @@ import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.registry.entries.EpicFightAttributes;
 import yesman.epicfight.registry.entries.EpicFightEntityTypes;
 
-public class WitherGhostClone extends FlyingMob {
-	public WitherGhostClone(EntityType<? extends FlyingMob> entityType, Level level) {
+public class WitherGhostClone extends Mob {
+	public WitherGhostClone(EntityType<? extends Mob> entityType, Level level) {
 		super(entityType, level);
 		this.setNoGravity(true);
 		this.noPhysics = true;
